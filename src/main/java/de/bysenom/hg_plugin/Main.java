@@ -11,6 +11,7 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         playerScoreboard = new PlayerScoreboard(this);
 
+
         // Schedule initial update after a slight delay
         new BukkitRunnable() {
             @Override
