@@ -7,22 +7,31 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class PlayerScoreboard {
 
     private Scoreboard scoreboard;
 
-    public PlayerScoreboard() {
-        ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-        scoreboard = scoreboardManager.getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("PlayerList", "dummy", "Spieler");
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        updatePlayerList();
+    public PlayerScoreboard(JavaPlugin plugin) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
+            scoreboard = scoreboardManager.getNewScoreboard();
+            Objective objective = scoreboard.registerNewObjective("PlayerList", "dummy", "Spieler");
+            objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+            updatePlayerList();
+        }, 20L); // Verzögere die Initialisierung um 1 Sekunde (20 Ticks)
     }
 
     public void updatePlayerList() {
+        if (scoreboard == null) {
+            return; // Abbruch, wenn das Scoreboard noch nicht initialisiert ist
+        }
+
         Objective objective = scoreboard.getObjective(DisplaySlot.SIDEBAR);
-        objective.unregister();
+        if (objective != null) {
+            objective.unregister();
+        }
 
         Objective newObjective = scoreboard.registerNewObjective("PlayerList", "dummy", "Spieler");
         newObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -47,4 +56,3 @@ public class PlayerScoreboard {
         return scoreboard;
     }
 }
-
