@@ -1,0 +1,5 @@
+name: HG
+version: '${project.version}'
+main: de.bysenom.hg.HG
+api-version: '1.20'
+load: STARTUP
