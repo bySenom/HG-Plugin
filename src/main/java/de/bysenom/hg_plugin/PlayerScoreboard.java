@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -17,43 +18,56 @@ public class PlayerScoreboard implements Listener {
     private Scoreboard scoreboard;
 
     public PlayerScoreboard(JavaPlugin plugin) {
-        plugin.getServer().getPluginManager().registerEvents(this, plugin); // Registriere den Listener für Events
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-            scoreboard = scoreboardManager.getNewScoreboard();
-            Objective objective = scoreboard.registerNewObjective("PlayerList", "dummy");
-            objective.setDisplayName("Spieler");
-            objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-            updatePlayerList();
-        }, 20L); // Verzögere die Initialisierung um 1 Sekunde (20 Ticks)
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
+        // Initialize scoreboard immediately
+        scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective("PlayerList", "dummy");
+        objective.setDisplayName("Spieler");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        updatePlayerList(); // Rufe updatePlayerList() auf, wenn ein Spieler beitritt
+        Player player = event.getPlayer();
+
+        // Update the scoreboard only when it's ready
+        if (scoreboard != null) {
+            updatePlayerList(player);
+            player.setScoreboard(scoreboard); // Set the scoreboard for the player
+        }
     }
 
-    public void updatePlayerList() {
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) { // Handle player leaving
+        Player player = event.getPlayer();
+        if (scoreboard != null) {
+            scoreboard.getTeam(player.getName()).removeEntry(player.getName()); // Remove from team
+        }
+    }
+
+    public void updatePlayerList(Player player) {
         if (scoreboard == null) {
             return; // Abbruch, wenn das Scoreboard noch nicht initialisiert ist
         }
 
         Objective objective = scoreboard.getObjective(DisplaySlot.SIDEBAR);
         if (objective != null) {
-            objective.unregister();
+            objective.unregister(); // Unregister unnecessary previous objective
         }
 
         Objective newObjective = scoreboard.registerNewObjective("PlayerList", "dummy");
         newObjective.setDisplayName("Spieler");
         newObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            Team team = scoreboard.getTeam(player.getName());
+        for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
+            Team team = scoreboard.getTeam(onlinePlayer.getName());
             if (team == null) {
-                team = scoreboard.registerNewTeam(player.getName());
+                team = scoreboard.registerNewTeam(onlinePlayer.getName());
             }
-            team.addEntry(player.getName());
-            newObjective.getScore(player.getName()).setScore(Bukkit.getServer().getOnlinePlayers().size());
+            team.addEntry(onlinePlayer.getName());
+            newObjective.getScore(onlinePlayer.getName()).setScore(Bukkit.getServer().getOnlinePlayers().size());
         }
     }
 }
+
