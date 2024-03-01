@@ -1,5 +1,5 @@
 name: HG
 version: '${project.version}'
-main: de.bysenom.hg.HG
+main: de.bysenom.hg_plugin.HG_plugin
 api-version: '1.20'
 load: STARTUP
