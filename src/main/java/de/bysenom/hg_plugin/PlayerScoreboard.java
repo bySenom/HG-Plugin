@@ -17,11 +17,12 @@ public class PlayerScoreboard implements Listener {
     private Scoreboard scoreboard;
 
     public PlayerScoreboard(JavaPlugin plugin) {
-        plugin.getServer().getPluginManager().registerEvents((Listener) this, plugin); // Registriere den Listener für Events
+        plugin.getServer().getPluginManager().registerEvents(this, plugin); // Registriere den Listener für Events
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
             scoreboard = scoreboardManager.getNewScoreboard();
-            Objective objective = scoreboard.registerNewObjective("PlayerList", "dummy", "Spieler");
+            Objective objective = scoreboard.registerNewObjective("PlayerList", "dummy");
+            objective.setDisplayName("Spieler");
             objective.setDisplaySlot(DisplaySlot.SIDEBAR);
             updatePlayerList();
         }, 20L); // Verzögere die Initialisierung um 1 Sekunde (20 Ticks)
@@ -42,11 +43,9 @@ public class PlayerScoreboard implements Listener {
             objective.unregister();
         }
 
-        Objective newObjective = scoreboard.registerNewObjective("PlayerList", "dummy", "Spieler");
+        Objective newObjective = scoreboard.registerNewObjective("PlayerList", "dummy");
+        newObjective.setDisplayName("Spieler");
         newObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
-
-        int playerCount = Bukkit.getServer().getOnlinePlayers().size();
-        newObjective.getScore("Spieler:").setScore(playerCount);
 
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             Team team = scoreboard.getTeam(player.getName());
@@ -54,14 +53,7 @@ public class PlayerScoreboard implements Listener {
                 team = scoreboard.registerNewTeam(player.getName());
             }
             team.addEntry(player.getName());
+            newObjective.getScore(player.getName()).setScore(Bukkit.getServer().getOnlinePlayers().size());
         }
-
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            scoreboard.getObjective(DisplaySlot.SIDEBAR).getScore(player.getName()).setScore(playerCount);
-        }
-    }
-
-    public Scoreboard getScoreboard() {
-        return scoreboard;
     }
 }
