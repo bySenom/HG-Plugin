@@ -1,18 +1,9 @@
 package de.bysenom.hg_plugin;
 
 import jdk.internal.icu.text.UnicodeSet;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.List;
-import java.util.Objects;
 
 public final class Main extends JavaPlugin implements Listener {
 
