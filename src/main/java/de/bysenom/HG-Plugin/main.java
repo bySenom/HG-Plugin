@@ -12,6 +12,7 @@ public final class main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        getLogger().info("Das Plugin wurde erfolgreich beendet!"); // Nachricht in der Konsole anzeigen
+        getServer().broadcastMessage("Das Plugin wurde erfolgreich beendet!"); // Nachricht im Chat anzeigen
     }
 }
