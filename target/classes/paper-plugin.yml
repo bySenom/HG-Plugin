@@ -10,7 +10,6 @@ commands:
   hg:
     description: "Join the Hunger Games"
     aliases: ["hungergames"]
-    permission: "hg.join"  # Optional permission node
     delay: 20              # Optional delay of 1 second (20 ticks)
 
 main: de.bysenom.hg_plugin.Main

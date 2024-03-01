@@ -13,10 +13,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public final class Main extends JavaPlugin implements CommandExecutor, Listener {
 
+    private static final Integer COUNTDOWN_TIME = 60;
+    Map<Player, Integer> countdowns = new HashMap<>();
     private PlayerScoreboard playerScoreboard;
     private final int cooldownTime = 60; // Cooldown time in seconds
     private CooldownManager cooldownManager;
@@ -70,18 +74,29 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
         if (cmd.getName().equalsIgnoreCase("hg")) {
             if (args.length > 0 && args[0].equalsIgnoreCase("join")) {
-                // Check if the player is on cooldown
-                if (cooldownManager.isOnCooldown(player)) {
-                    player.sendMessage("You're still on cooldown. Please wait " + cooldownManager.getRemainingCooldown(player) + " seconds.");
-                    return true;
-                }
+                countdowns.put(player, COUNTDOWN_TIME);
 
-                // Handle the /hg join command
-                player.sendMessage("You joined the Hunger Games!");
-                // Set cooldown for the player
-                cooldownManager.setCooldown(player, cooldownTime);
-                // Update XP bar to show cooldown progress
-                updateXPBar(player);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (!countdowns.containsKey(player)) {
+                            return; // Player finished or left
+                        }
+
+                        int remainingTime = countdowns.get(player);
+                        remainingTime--;
+                        countdowns.put(player, remainingTime);
+
+                        // Update player display with remaining time
+
+                        if (remainingTime <= 0) {
+                            countdowns.remove(player);
+
+                            // Perform actions for end of countdown
+                        }
+                    }
+                }.runTaskTimer(this, 0L, 20L); // Update every second
+
                 return true;
             }
         }
