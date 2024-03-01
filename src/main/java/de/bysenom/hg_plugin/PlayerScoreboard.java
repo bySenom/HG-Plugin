@@ -6,16 +6,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
-import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Objects;
 
 public class PlayerScoreboard implements Listener {
 
-    private Scoreboard scoreboard;
+    private final Scoreboard scoreboard;
 
     public PlayerScoreboard(JavaPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -33,7 +34,7 @@ public class PlayerScoreboard implements Listener {
 
         // Update the scoreboard only when it's ready
         if (scoreboard != null) {
-            updatePlayerList(player);
+            updatePlayerList();
             player.setScoreboard(scoreboard); // Set the scoreboard for the player
         }
     }
@@ -42,11 +43,11 @@ public class PlayerScoreboard implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) { // Handle player leaving
         Player player = event.getPlayer();
         if (scoreboard != null) {
-            scoreboard.getTeam(player.getName()).removeEntry(player.getName()); // Remove from team
+            Objects.requireNonNull(scoreboard.getTeam(player.getName())).removeEntry(player.getName()); // Remove from team
         }
     }
 
-    public void updatePlayerList(Player player) {
+    public void updatePlayerList() {
         if (scoreboard == null) {
             return; // Abbruch, wenn das Scoreboard noch nicht initialisiert ist
         }
