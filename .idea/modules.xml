@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/HG-Plugin.iml" filepath="$PROJECT_DIR$/.idea/HG-Plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HG.iml" filepath="$PROJECT_DIR$/HG.iml" />
     </modules>
   </component>
 </project>
