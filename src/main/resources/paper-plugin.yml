@@ -1,4 +1,7 @@
-name: HG
+name: HG-Plugin
+author: bySenom
+description: 'HG-Plugin'
+source: 'https://github.com/Bysenom/HG-Plugin'
 version: '${project.version}'
 main: de.bysenom.hg_plugin.HG_plugin
 api-version: '1.20'
