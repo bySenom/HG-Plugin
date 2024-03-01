@@ -7,11 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
-import org.bukkit.scoreboard.Criterias;
+import org.bukkit.scoreboard.*;
 
 import java.util.Objects;
 
@@ -19,7 +15,7 @@ public class PlayerScoreboard implements Listener {
 
     private final Scoreboard scoreboard;
 
-    public PlayerScoreboard(JavaPlugin plugin) {
+    public PlayerScoreboard(JavaPlugin plugin, ScoreboardManager scoreboardManager) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         // Initialize scoreboard immediately
