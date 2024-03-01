@@ -1,14 +1,28 @@
 package de.bysenom.hg_plugin;
 
+import jdk.internal.icu.text.UnicodeSet;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public final class Main extends JavaPlugin {
+import java.util.List;
+import java.util.Objects;
+
+public final class Main extends JavaPlugin implements Listener {
 
     private PlayerScoreboard playerScoreboard;
+    private int countdown;
+    private static UnicodeSet players;
 
     @Override
     public void onEnable() {
+        getServer().getPluginManager().registerEvents(this, this);
         playerScoreboard = new PlayerScoreboard(this);
 
 
@@ -24,13 +38,14 @@ public final class Main extends JavaPlugin {
         getServer().getScheduler().runTaskTimer(this, () -> playerScoreboard.updatePlayerList(), 20L, 20L);
 
         getLogger().info("Plugin erfolgreich geladen!");
-        getServer().broadcastMessage("Plugin erfolgreich geladen!");
     }
+
+    // Befehlsklasse
+
 
     @Override
     public void onDisable() {
         getLogger().info("Plugin erfolgreich beendet!");
-        getServer().broadcastMessage("Plugin erfolgreich beendet!");
     }
 }
 

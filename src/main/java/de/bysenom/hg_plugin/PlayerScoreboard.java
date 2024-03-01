@@ -11,6 +11,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.Criterias;
 
 import java.util.Objects;
 
@@ -57,9 +58,9 @@ public class PlayerScoreboard implements Listener {
             objective.unregister(); // Unregister unnecessary previous objective
         }
 
-        Objective newObjective = scoreboard.registerNewObjective("PlayerList", "dummy");
-        newObjective.setDisplayName("Spieler");
-        newObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        // Create a new objective using the recommended method
+        Objective newObjective = scoreboard.registerNewObjective("PlayerList", Criterias.DEATHS, "Spieler");
+        newObjective.setDisplaySlot(DisplaySlot.SIDEBAR); // No need to set display name separately
 
         for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
             Team team = scoreboard.getTeam(onlinePlayer.getName());

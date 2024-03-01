@@ -8,4 +8,4 @@ load: STARTUP
 
 main: de.bysenom.hg_plugin.Main
 playerscoreboard-class: de.bysenom.hg_plugin.PlayerScoreboard
-
+lobbysystem-class: de.bysenom.hg_plugin.LobbySystem
