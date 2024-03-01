@@ -32,11 +32,6 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
         // Get the scoreboard manager
         ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-        if (scoreboardManager == null) {
-            getLogger().warning("Scoreboard manager is not available. Disabling plugin...");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
 
         // Initialize player scoreboard
         playerScoreboard = new PlayerScoreboard(this, scoreboardManager);
