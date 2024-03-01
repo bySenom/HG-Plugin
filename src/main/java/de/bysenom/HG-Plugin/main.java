@@ -6,9 +6,8 @@ public final class main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
-        // Plugin startup logic
-
+        getLogger().info("Das Plugin wurde erfolgreich geladen!"); // Nachricht in der Konsole anzeigen
+        getServer().broadcastMessage("Das Plugin wurde erfolgreich geladen!"); // Nachricht im Chat anzeigen
     }
 
     @Override
