@@ -4,6 +4,7 @@ import de.bysenom.hg_plugin.commands.Fly;
 import de.bysenom.hg_plugin.commands.HGJoin;
 import de.bysenom.hg_plugin.commands.HGStart;
 import de.bysenom.hg_plugin.handlers.LobbyCountdown;
+import de.bysenom.hg_plugin.handlers.BuildHandler;
 import de.bysenom.hg_plugin.mechanics.Lobby;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
@@ -32,7 +33,7 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
         HGJoin hgJoin = new HGJoin(lobbyCountdown);
 
-
+        getServer().getPluginManager().registerEvents(new BuildHandler(), this);
 
         getCommand("hgstart").setExecutor(hgStartCommand);
         getCommand("hgjoin").setExecutor(hgJoin);

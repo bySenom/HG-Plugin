@@ -59,6 +59,9 @@ public class LobbyCountdown {
 
             @Override
             public void run() {
+                BuildHandler.disallowBlockPlacing(player);
+                BuildHandler.disallowBlockBreaking(player);
+                InvincibilityHandler.makeInvincible(player);
                 // Update XP-Bar, um den Countdown-Fortschritt anzuzeigen
                 updateXPBar(timeLeft);
 
@@ -75,6 +78,9 @@ public class LobbyCountdown {
 
                 // Überprüfe, ob die Zeit abgelaufen ist
                 if (timeLeft == 0) {
+                    BuildHandler.allowBlockBreaking(player);
+                    BuildHandler.allowBlockPlacing(player);
+                    InvincibilityHandler.removeInvincibility(player);
                     // Spiele den Sound für das Level-Up ab
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, 1.0f, 1.0f);
                     // Breche die Aufgabe ab
