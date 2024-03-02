@@ -19,6 +19,7 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
     @Override
     public void onEnable() {
 
+
         // Initialize LobbyCountdown and Lobby
         HGStart hgStartCommand = new HGStart(lobbyCountdown);
         LobbyCountdown lobbyCountdown = new LobbyCountdown(this);

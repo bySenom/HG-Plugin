@@ -1,6 +1,5 @@
 package de.bysenom.hg_plugin.handlers;
 
-import de.bysenom.hg_plugin.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -59,8 +58,10 @@ public class LobbyCountdown {
 
             @Override
             public void run() {
-                BuildHandler.disallowBlockPlacing(player);
-                BuildHandler.disallowBlockBreaking(player);
+                BuildHandler.disallowBlockPlacing();
+                BuildHandler.disallowBlockBreaking();
+                HungerHandler.disableHunger(player);
+                MovementHandler.disableMovement(player);
                 InvincibilityHandler.makeInvincible(player);
                 // Update XP-Bar, um den Countdown-Fortschritt anzuzeigen
                 updateXPBar(timeLeft);
@@ -78,14 +79,16 @@ public class LobbyCountdown {
 
                 // Überprüfe, ob die Zeit abgelaufen ist
                 if (timeLeft == 0) {
-                    BuildHandler.allowBlockBreaking(player);
-                    BuildHandler.allowBlockPlacing(player);
-                    InvincibilityHandler.removeInvincibility(player);
                     // Spiele den Sound für das Level-Up ab
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, 1.0f, 1.0f);
                     // Breche die Aufgabe ab
                     cancel();
                     countdownRunning = false; // Setze countdownRunning auf false, um den Countdown neu zu starten
+                    BuildHandler.allowBlockBreaking();
+                    BuildHandler.allowBlockPlacing();
+                    HungerHandler.enableHunger(player);
+                    InvincibilityHandler.removeInvincibility(player);
+                    MovementHandler.enableMovement(player);
                 }
 
                 // Verringere die verbleibende Zeit

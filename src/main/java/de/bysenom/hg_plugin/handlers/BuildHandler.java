@@ -7,28 +7,33 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class BuildHandler extends JavaPlugin implements Listener {
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+
+public class BuildHandler implements Listener {
 
     private static boolean allowBlockPlacing = true;
     private static boolean allowBlockBreaking = true;
 
     // Method to allow block placing
-    public static void allowBlockPlacing(Player player) {
+    public static void allowBlockPlacing() {
         allowBlockPlacing = true;
     }
 
     // Method to disallow block placing
-    public static void disallowBlockPlacing(Player player) {
+    public static void disallowBlockPlacing() {
         allowBlockPlacing = false;
     }
 
     // Method to allow block breaking
-    public static void allowBlockBreaking(Player player) {
+    public static void allowBlockBreaking() {
         allowBlockBreaking = true;
     }
 
     // Method to disallow block breaking
-    public static void disallowBlockBreaking(Player player) {
+    public static void disallowBlockBreaking() {
         allowBlockBreaking = false;
     }
 
