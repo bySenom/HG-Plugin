@@ -12,15 +12,13 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
     private LobbyCountdown lobbyCountdown;
 
+
     @Override
     public void onEnable() {
         // Initialize LobbyCountdown
-        LobbyCountdown lobbyCountdown = new LobbyCountdown();
+        lobbyCountdown = new LobbyCountdown(this);
 
         HGJoin hgJoin = new HGJoin(lobbyCountdown);
-        PlayerJoinListener playerJoinListener = new PlayerJoinListener(lobbyCountdown);
-        getServer().getPluginManager().registerEvents(playerJoinListener, this);
-
 
 
 

@@ -9,10 +9,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class LobbyCountdown {
 
     private final int countdownTime = 60; // Countdown time in seconds
-    private Main mainInstance = null;
+    private final Plugin plugin;
 
-    public LobbyCountdown() {
-        this.mainInstance = mainInstance;
+    public LobbyCountdown(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     public void startCountdown() {
@@ -39,7 +39,7 @@ public class LobbyCountdown {
                     remainingTime--;
                 }
             }
-        }.runTaskTimer((Plugin) this, 0L, 20L); // Update XP bar every second
+        }.runTaskTimer(plugin, 0L, 20L); // Update XP bar every second
     }
 
     private void updateXPBar(Player player, int remainingTime) {
