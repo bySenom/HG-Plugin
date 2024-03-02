@@ -17,7 +17,7 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         // Initialize LobbyCountdown
         LobbyCountdown lobbyCountdown = new LobbyCountdown();
 
-
+        HGJoin hgJoin = new HGJoin(lobbyCountdown);
         PlayerJoinListener playerJoinListener = new PlayerJoinListener(lobbyCountdown);
         getServer().getPluginManager().registerEvents(playerJoinListener, this);
 
@@ -26,7 +26,7 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
 
 
-        getCommand("hgjoin").setExecutor(new HGJoin());
+        getCommand("hgjoin").setExecutor(hgJoin);
         getCommand("fly").setExecutor(new Fly());
         getLogger().info("Plugin erfolgreich geladen!");
     }
