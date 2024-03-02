@@ -11,7 +11,7 @@ public class MovementHandler {
         if (player != null) {
             player.setWalkSpeed(0); // Set walk speed to 0
             player.setFlySpeed(0); // Set fly speed to 0
-            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 200)); // Disable jumping
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 250)); // Disable jumping
         }
     }
 
