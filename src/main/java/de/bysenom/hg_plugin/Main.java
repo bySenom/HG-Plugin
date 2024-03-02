@@ -3,7 +3,6 @@ package de.bysenom.hg_plugin;
 import de.bysenom.hg_plugin.commands.Fly;
 import de.bysenom.hg_plugin.commands.HGJoin;
 import de.bysenom.hg_plugin.handlers.LobbyCountdown;
-import de.bysenom.hg_plugin.handlers.PlayerJoinListener;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
