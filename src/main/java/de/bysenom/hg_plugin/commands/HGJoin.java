@@ -28,7 +28,7 @@ public class HGJoin implements CommandExecutor {
         Player player = (Player) sender;
 
         // Start the countdown for the player
-        lobbyCountdown.startCountdown();
+        lobbyCountdown.startCountdownForAllPlayers();
 
         return true; // Command is handled, no need to continue processing
     }
