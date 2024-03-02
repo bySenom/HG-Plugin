@@ -26,6 +26,9 @@ public class LobbyCountdown {
             // Starte den Countdown mit voller verbleibender Zeit für alle Spieler
             startCountdown(countdownTime);
             countdownRunning = true;
+        } else {
+            // Wenn der Countdown läuft, sende eine Nachricht, dass der Countdown bereits aktiv ist
+            Bukkit.broadcastMessage(ChatColor.RED + "Der Countdown läuft bereits!");
         }
     }
 
@@ -62,6 +65,7 @@ public class LobbyCountdown {
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, 1.0f, 1.0f);
                     // Breche die Aufgabe ab
                     cancel();
+                    countdownRunning = false; // Setze countdownRunning auf false, um den Countdown neu zu starten
                 }
 
                 // Verringere die verbleibende Zeit
@@ -109,4 +113,3 @@ public class LobbyCountdown {
         countdownRunning = false;
     }
 }
-
