@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class LobbyCountdown {
 
-    private final int countdownTime = 60; // Countdown-Zeit in Sekunden
+    private int countdownTime = 60; // Countdown-Zeit in Sekunden
     private final Plugin plugin;
     private boolean countdownRunning = false;
     private BukkitRunnable countdownTask;
@@ -34,12 +34,26 @@ public class LobbyCountdown {
 
     // Starte den Countdown mit einer spezifischen verbleibenden Zeit
     public void startCountdown(int remainingTime) {
+        startCountdownWithTime(remainingTime, remainingTime); // Call the method with remainingTime as both arguments
+    }
+
+    public void startCountdownWithTime(int remainingTime, int newTime) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            startPlayerCountdown(player, remainingTime);
+            startPlayerCountdown(player, remainingTime, newTime); // Pass remainingTime and newTime as arguments
         }
     }
 
-    private void startPlayerCountdown(Player player, int remainingTime) {
+    // Ändere die Countdown-Zeit
+    public void changeCountdownTime(int newTime) {
+        if (!countdownRunning) {
+            countdownTime = newTime;
+            Bukkit.broadcastMessage(ChatColor.YELLOW + "Countdown-Zeit wurde auf " + newTime + " Sekunden geändert.");
+        } else {
+            Bukkit.broadcastMessage(ChatColor.RED + "Der Countdown läuft bereits!");
+        }
+    }
+
+    private void startPlayerCountdown(Player player, int remainingTime, int newTime) {
         countdownTask = new BukkitRunnable() {
             int timeLeft = remainingTime;
 
@@ -95,6 +109,7 @@ public class LobbyCountdown {
         countdownTask.runTaskTimer(plugin, 0L, 20L); // Aktualisiere die XP-Bar alle Sekunde
     }
 
+
     // Aktualisiere die XP-Bar aller Spieler basierend auf der verbleibenden Zeit
     private void updateXPBar(int remainingTime) {
         float progress = (float) remainingTime / countdownTime;
@@ -113,3 +128,4 @@ public class LobbyCountdown {
         countdownRunning = false;
     }
 }
+

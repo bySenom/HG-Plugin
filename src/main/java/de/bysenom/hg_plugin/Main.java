@@ -2,6 +2,7 @@ package de.bysenom.hg_plugin;
 
 import de.bysenom.hg_plugin.commands.Fly;
 import de.bysenom.hg_plugin.commands.HGJoin;
+import de.bysenom.hg_plugin.commands.HGStart;
 import de.bysenom.hg_plugin.handlers.LobbyCountdown;
 import de.bysenom.hg_plugin.mechanics.Lobby;
 import org.bukkit.command.CommandExecutor;
@@ -18,8 +19,10 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
     public void onEnable() {
 
         // Initialize LobbyCountdown and Lobby
+        HGStart hgStartCommand = new HGStart(lobbyCountdown);
         LobbyCountdown lobbyCountdown = new LobbyCountdown(this);
         lobby = new Lobby(lobbyCountdown);
+
 
 
 
@@ -31,8 +34,7 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
 
 
-
-
+        getCommand("hgstart").setExecutor(hgStartCommand);
         getCommand("hgjoin").setExecutor(hgJoin);
         getCommand("fly").setExecutor(new Fly());
         getLogger().info("Plugin erfolgreich geladen!");

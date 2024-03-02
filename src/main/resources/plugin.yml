@@ -12,6 +12,9 @@ commands:
   hgjoin:
     description: Joins the HG
     usage: /hgjoin
+  hgstart:
+    description: Force Start the Game
+    usage: /hgstart
 
 main: de.bysenom.hg_plugin.Main
 fly-class: de.bysenom.hg_plugin.commands.Fly
