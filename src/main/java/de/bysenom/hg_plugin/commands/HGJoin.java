@@ -10,7 +10,7 @@ public class HGJoin implements CommandExecutor {
 
     private final LobbyCountdown lobbyCountdown;
 
-    public HGJoin(LobbyCountdown lobbyCountdown) {
+    public HGJoin() {
         this.lobbyCountdown = lobbyCountdown;
     }
 
