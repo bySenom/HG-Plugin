@@ -9,6 +9,9 @@ commands:
   fly:
     description: Toggles flight mode
     usage: /fly
+  hgjoin:
+    description: Joins the HG
+    usage: /hgjoin
 
 main: de.bysenom.hg_plugin.Main
 fly-class: de.bysenom.hg_plugin.commands.Fly
