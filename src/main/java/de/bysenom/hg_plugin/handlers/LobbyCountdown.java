@@ -39,13 +39,16 @@ public class LobbyCountdown {
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.MASTER, 1.0f, 1.0f);
                 }
 
-                if (remainingTime <= 0) {
-                    // Countdown finished, cancel the task
+                // Check if the remaining time is 0
+                if (remainingTime == 0) {
+                    // Play the level-up sound at 0 seconds
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, 1.0f, 1.0f);
+                    // Cancel the task
                     cancel();
-                } else {
-                    // Decrease remaining time
-                    remainingTime--;
                 }
+
+                // Decrease remaining time
+                remainingTime--;
             }
         }.runTaskTimer(plugin, 0L, 20L); // Update XP bar every second
     }
