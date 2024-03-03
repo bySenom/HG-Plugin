@@ -5,8 +5,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import static de.bysenom.hg_plugin.handlers.ItemHandler.getPlayerHeadItem;
 
 public class LobbyCountdown {
 
@@ -14,6 +17,7 @@ public class LobbyCountdown {
     private final Plugin plugin;
     private boolean countdownRunning = false;
     private BukkitRunnable countdownTask;
+
 
     public LobbyCountdown(Plugin plugin) {
         this.plugin = plugin;
@@ -55,8 +59,18 @@ public class LobbyCountdown {
     }
 
     private void startPlayerCountdown(Player player, int remainingTime, int newTime) {
+
         TeleportHandler.initializeLocations();
         TeleportHandler.teleportToLocation(player, "LobbySpawn");
+
+        ItemStack playerHeadItem = getPlayerHeadItem(plugin);
+
+        if (ItemHandler.createWoodenChestItem(plugin)) {
+            player.getInventory().addItem(ItemHandler.getWoodenChestItem());
+        }
+        if (ItemHandler.createPlayerHeadItem(plugin)) {
+            player.getInventory().addItem(getPlayerHeadItem(plugin));
+        }
         countdownTask = new BukkitRunnable() {
             int timeLeft = remainingTime;
 

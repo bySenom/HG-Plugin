@@ -3,6 +3,7 @@ package de.bysenom.hg_plugin;
 import de.bysenom.hg_plugin.commands.Fly;
 import de.bysenom.hg_plugin.commands.HGJoin;
 import de.bysenom.hg_plugin.commands.HGStart;
+import de.bysenom.hg_plugin.handlers.ItemHandler;
 import de.bysenom.hg_plugin.handlers.LobbyCountdown;
 import de.bysenom.hg_plugin.handlers.BuildHandler;
 import de.bysenom.hg_plugin.mechanics.Lobby;
@@ -16,20 +17,16 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
     private Lobby lobby;
 
 
-    @Override
     public void onEnable() {
-
-
         // Initialize LobbyCountdown and Lobby
-        HGStart hgStartCommand = new HGStart(lobbyCountdown);
         LobbyCountdown lobbyCountdown = new LobbyCountdown(this);
         lobby = new Lobby(lobbyCountdown);
-
-        // Initialize LobbyCountdown
-        lobbyCountdown = new LobbyCountdown(this);
-
-        HGJoin hgJoin = new HGJoin(lobbyCountdown);
-
+        ItemHandler itemHandler = new ItemHandler(this);
+        HGStart hgStartCommand = new HGStart(lobbyCountdown);
+        HGJoin hgJoin = new HGJoin(this, lobbyCountdown);
+        getServer().getPluginManager().registerEvents(new ItemHandler(this), this);
+        // Register your event listener
+        getServer().getPluginManager().registerEvents(new ItemHandler(this), this);
         getServer().getPluginManager().registerEvents(new BuildHandler(), this);
 
         getCommand("hgstart").setExecutor(hgStartCommand);

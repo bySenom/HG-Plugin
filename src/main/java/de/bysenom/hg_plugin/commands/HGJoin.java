@@ -1,16 +1,20 @@
 package de.bysenom.hg_plugin.commands;
 
+import de.bysenom.hg_plugin.handlers.ItemHandler;
 import de.bysenom.hg_plugin.handlers.LobbyCountdown;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class HGJoin implements CommandExecutor {
 
     private final LobbyCountdown lobbyCountdown;
+    private final JavaPlugin plugin; // Plugin instance
 
-    public HGJoin(LobbyCountdown lobbyCountdown) {
+    public HGJoin(JavaPlugin plugin, LobbyCountdown lobbyCountdown) {
+        this.plugin = plugin;
         this.lobbyCountdown = lobbyCountdown;
     }
 
