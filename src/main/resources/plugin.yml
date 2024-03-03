@@ -23,5 +23,6 @@ lobbycountdown-class: de.bysenom.hg_plugin.handlers.LobbyCountdown
 playerjoinlistener-class: de.bysenom.hg_plugin.handlers.PlayerJoinListener
 invincibilityhandler-class: de.bysenom.hg_plugin.handlers.InvincibilityHandler
 buildhandler-class: de.bysenom.hg_plugin.handlers.BuildHandler
+teleport-handler: de.bysenom.hg_plugin.handlers.TeleportHandler
 
 
