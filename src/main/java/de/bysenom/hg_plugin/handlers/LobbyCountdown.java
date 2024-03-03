@@ -58,6 +58,7 @@ public class LobbyCountdown {
 
             @Override
             public void run() {
+                TeleportHandler.teleportToLocation(player, "LobbySpawn");
                 BuildHandler.disallowBlockPlacing();
                 BuildHandler.disallowBlockBreaking();
                 HungerHandler.disableHunger(player);

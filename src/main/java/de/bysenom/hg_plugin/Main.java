@@ -25,10 +25,6 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         LobbyCountdown lobbyCountdown = new LobbyCountdown(this);
         lobby = new Lobby(lobbyCountdown);
 
-
-
-
-
         // Initialize LobbyCountdown
         lobbyCountdown = new LobbyCountdown(this);
 
