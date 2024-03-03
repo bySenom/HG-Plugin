@@ -1,6 +1,8 @@
 package de.bysenom.hg_plugin.handlers;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -8,12 +10,6 @@ import java.util.Map;
 
 public class TeleportHandler {
 
-
-
-    //TeleportHandler.teleportToLocation(player, "FirstLocation");
-
-
-    // Map to store locations by name
     private static final Map<String, Location> locations = new HashMap<>();
 
     // Method to add a new location
@@ -31,13 +27,22 @@ public class TeleportHandler {
         }
     }
 
-    public static void main(String[] args) {
+    // Method to initialize the locations
+    public static void initializeLocations() {
+        // Initialize Bukkit if necessary (may not be necessary in all environments)
+        if (!Bukkit.getServer().getOnlinePlayers().isEmpty()) {
+            Bukkit.getServer().getConsoleSender().sendMessage("Initializing Bukkit...");
+        }
+
+        // Get the world reference
+        World world = Bukkit.getWorld("world");
+
         // Add the first location
-        Location firstLocation = new Location(null, -209, 69, 228); // Example location coordinates
+        Location firstLocation = new Location(world, -209, 69, -228); // Example location coordinates
         addLocation("LobbySpawn", firstLocation);
 
         // Add the second location
-        Location secondLocation = new Location(null, -200, 70, 300); // Example location coordinates
+        Location secondLocation = new Location(world, -200, 70, 300); // Example location coordinates
         addLocation("SecondLocation", secondLocation);
     }
 }

@@ -34,9 +34,11 @@ public class LobbyCountdown {
     // Starte den Countdown mit einer spezifischen verbleibenden Zeit
     public void startCountdown(int remainingTime) {
         startCountdownWithTime(remainingTime, remainingTime); // Call the method with remainingTime as both arguments
+
     }
 
     public void startCountdownWithTime(int remainingTime, int newTime) {
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             startPlayerCountdown(player, remainingTime, newTime); // Pass remainingTime and newTime as arguments
         }
@@ -53,16 +55,19 @@ public class LobbyCountdown {
     }
 
     private void startPlayerCountdown(Player player, int remainingTime, int newTime) {
+        TeleportHandler.initializeLocations();
+        TeleportHandler.teleportToLocation(player, "LobbySpawn");
         countdownTask = new BukkitRunnable() {
             int timeLeft = remainingTime;
 
+
             @Override
             public void run() {
-                TeleportHandler.teleportToLocation(player, "LobbySpawn");
+
                 BuildHandler.disallowBlockPlacing();
                 BuildHandler.disallowBlockBreaking();
                 HungerHandler.disableHunger(player);
-                MovementHandler.disableMovement(player);
+                //MovementHandler.disableMovement(player);
                 InvincibilityHandler.makeInvincible(player);
                 // Update XP-Bar, um den Countdown-Fortschritt anzuzeigen
                 updateXPBar(timeLeft);
@@ -89,7 +94,7 @@ public class LobbyCountdown {
                     BuildHandler.allowBlockPlacing();
                     HungerHandler.enableHunger(player);
                     InvincibilityHandler.removeInvincibility(player);
-                    MovementHandler.enableMovement(player);
+                    //MovementHandler.enableMovement(player);
                 }
 
                 // Verringere die verbleibende Zeit
