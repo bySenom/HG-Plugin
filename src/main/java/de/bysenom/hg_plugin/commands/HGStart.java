@@ -1,7 +1,6 @@
 package de.bysenom.hg_plugin.commands;
 
 import de.bysenom.hg_plugin.handlers.LobbyCountdown;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
