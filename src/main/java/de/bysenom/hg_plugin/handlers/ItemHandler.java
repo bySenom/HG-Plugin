@@ -60,9 +60,9 @@ public class ItemHandler implements Listener {
         // Check if the player right-clicked with the anchor item
         if (item.getType() == Material.ANVIL && item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
-            if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.GRAY + "Anchor Kit")) {
-                // Activate the Anchor Kit
-                KitHandler.enableAnchor();
+            if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.GRAY + "Anchor Kit") && KitHandler.isAnchorEnabled(player)) {
+                // Activate the Anchor Kit for the player
+                KitHandler.enableAnchor(player);
 
                 // Inform the player that the Anchor Kit is now active
                 player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.GRAY + "Anchor Kit" + ChatColor.RED + " wurde ausgewählt!");
@@ -72,17 +72,17 @@ public class ItemHandler implements Listener {
             }
         }
 
-
+        // Check if the player right-clicked with the ninja item
         if (item.getType() == Material.LEATHER_BOOTS && item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
-            if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.DARK_PURPLE + "Ninja Kit")) {
-                // Activate the Anchor Kit
-                KitHandler.enableNinja();
+            if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.DARK_PURPLE + "Ninja Kit") && KitHandler.isNinjaEnabled(player)) {
+                // Activate the Ninja Kit for the player
+                KitHandler.enableNinja(player);
 
-                // Inform the player that the Anchor Kit is now active
+                // Inform the player that the Ninja Kit is now active
                 player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.DARK_PURPLE + "Ninja Kit" + ChatColor.RED + " wurde ausgewählt!");
 
-                // Prevent further interaction with the anchor item
+                // Prevent further interaction with the ninja item
                 event.setCancelled(true);
             }
         }
@@ -153,52 +153,40 @@ public class ItemHandler implements Listener {
 
     @EventHandler
     public void onKitsChestClick(InventoryClickEvent event) {
-        Inventory clickedInventory = event.getClickedInventory();
-        if (clickedInventory != null && event.getInventory().getHolder() instanceof KitsChestHolder) {
-            // Check if the clicked inventory is the Kits Chest GUI
-            if (event.getView().getTitle().equals("Kits Chest GUI")) {
-                // Check if the clicked item is the Anchor Kit item
-                ItemStack clickedItem = event.getCurrentItem();
-                if (clickedItem != null && clickedItem.getType() == Material.ANVIL && clickedItem.hasItemMeta()) {
-                    ItemMeta meta = clickedItem.getItemMeta();
-                    if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.GRAY + "Anchor Kit")) {
-                        // Activate the Anchor Kit
-                        KitHandler.enableAnchor();
+        // Check if the clicked item is the Anchor Kit item
+        ItemStack clickedItem = event.getCurrentItem();
+        if (clickedItem != null && clickedItem.getType() == Material.ANVIL && clickedItem.hasItemMeta()) {
+            ItemMeta meta = clickedItem.getItemMeta();
+            if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.GRAY + "Anchor Kit")) {
+                // Activate the Anchor Kit for the player who clicked
+                Player player = (Player) event.getWhoClicked();
+                KitHandler.enableAnchor(player);
 
-                        // Inform the player that the Anchor Kit is now active
-                        Player player = (Player) event.getWhoClicked();
-                        player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.GRAY + "Anchor Kit" + ChatColor.RED + " wurde ausgewählt!");
+                // Inform the player that the Anchor Kit is now active
+                player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.GRAY + "Anchor Kit" + ChatColor.RED + " wurde ausgewählt!");
 
-                        // Prevent further interaction with the item
-                        event.setCancelled(true);
-                    }
-                }
+                // Prevent further interaction with the item
+                event.setCancelled(true);
             }
         }
     }
 
     @EventHandler
     public void onNinjaKitClick(InventoryClickEvent event) {
-        Inventory clickedInventory = event.getClickedInventory();
-        if (clickedInventory != null && event.getInventory().getHolder() instanceof KitsChestHolder) {
-            // Check if the clicked inventory is the Kits Chest GUI
-            if (event.getView().getTitle().equals("Kits Chest GUI")) {
-                // Check if the clicked item is the Ninja Kit item
-                ItemStack clickedItem = event.getCurrentItem();
-                if (clickedItem != null && clickedItem.getType() == Material.LEATHER_BOOTS && clickedItem.hasItemMeta()) {
-                    ItemMeta meta = clickedItem.getItemMeta();
-                    if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.DARK_PURPLE + "Ninja Kit")) {
-                        // Activate the Ninja Kit
-                        KitHandler.enableNinja();
+        // Check if the clicked item is the Ninja Kit item
+        ItemStack clickedItem = event.getCurrentItem();
+        if (clickedItem != null && clickedItem.getType() == Material.LEATHER_BOOTS && clickedItem.hasItemMeta()) {
+            ItemMeta meta = clickedItem.getItemMeta();
+            if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.DARK_PURPLE + "Ninja Kit")) {
+                // Activate the Ninja Kit for the player who clicked
+                Player player = (Player) event.getWhoClicked();
+                KitHandler.enableNinja(player);
 
-                        // Inform the player that the Ninja Kit is now active
-                        Player player = (Player) event.getWhoClicked();
-                        player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.DARK_PURPLE + "Ninja Kit" + ChatColor.RED + " wurde ausgewählt!");
+                // Inform the player that the Ninja Kit is now active
+                player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.DARK_PURPLE + "Ninja Kit" + ChatColor.RED + " wurde ausgewählt!");
 
-                        // Prevent further interaction with the item
-                        event.setCancelled(true);
-                    }
-                }
+                // Prevent further interaction with the item
+                event.setCancelled(true);
             }
         }
     }

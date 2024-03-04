@@ -12,6 +12,7 @@ import de.bysenom.hg_plugin.kits.Ninja;
 import de.bysenom.hg_plugin.mechanics.Lobby;
 import de.bysenom.hg_plugin.mechanics.SoupHealing;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -52,28 +53,26 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        // Example usage of KitHandler methods
+        Player player = event.getPlayer(); // Get the player involved in the event
         ItemStack item = event.getItem();
         if (item != null) {
-            if (KitHandler.isAnchor(item)) {
+            if (KitHandler.isAnchor(item, player)) {
                 // Handle anchor item
-                if (KitHandler.isAnchorEnabled()) {
-                    // Anchor is enabled
+                if (KitHandler.isAnchorEnabled(player)) {
+                    // Anchor is enabled for this player
                 } else {
-                    // Anchor is not enabled
+                    // Anchor is not enabled for this player
                 }
-            } else if (KitHandler.isNinja(item)) {
+            } else if (KitHandler.isNinja(item, player)) {
                 // Handle ninja item
-                if (KitHandler.isNinjaEnabled()) {
-                    // Ninja is enabled
+                if (KitHandler.isNinjaEnabled(player)) {
+                    // Ninja is enabled for this player
                 } else {
-                    // Ninja is not enabled
+                    // Ninja is not enabled for this player
                 }
             }
         }
     }
-
-
 }
 
 

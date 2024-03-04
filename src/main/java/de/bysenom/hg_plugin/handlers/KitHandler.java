@@ -1,48 +1,69 @@
 package de.bysenom.hg_plugin.handlers;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public class KitHandler implements Listener {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
-    private static boolean anchorEnabled = false;
+public class KitHandler {
+    private static final Map<UUID, Boolean> ninjaEnabledMap = new HashMap<>();
+    private static final Map<UUID, Boolean> anchorEnabledPlayers = new HashMap<>();
 
-    // Method to enable anchor
-    public static void enableAnchor() {
-        anchorEnabled = true;
+    // Method to enable anchor for a specific player
+    public static void enableAnchor(Player player) {
+        // Disable ninja for the player
+        disableNinja(player);
+        // Set the anchor enabled status for the player
+        anchorEnabledPlayers.put(player.getUniqueId(), true);
     }
 
-    // Method to disable anchor
-    public static void disableAnchor() {
-        anchorEnabled = false;
+    // Method to disable anchor for a specific player
+    public static void disableAnchor(Player player) {
+        // Set the anchor disabled status for the player
+        anchorEnabledPlayers.put(player.getUniqueId(), false);
     }
 
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        if (anchorEnabled) {
-            Player player = event.getPlayer();
-            ItemStack item = event.getItem();
-
-            // Check if the player right-clicked with an anchor item
-            if (item != null && isAnchor(item)) {
-                // Handle anchor usage
-                // For example:
-                // handleAnchorUsage(player);
-            }
-        }
+    // Method to check if anchor is enabled for a specific player
+    public static boolean isAnchorEnabled(Player player) {
+        // Check if the player's UUID exists in the anchor enabled players map
+        return anchorEnabledPlayers.getOrDefault(player.getUniqueId(), false);
     }
 
-    // Method to check if an item is an anchor
-    private boolean isAnchor(ItemStack item) {
-        // Implement logic to check if the item is an anchor
+    // Method to enable ninja for a player
+    public static void enableNinja(Player player) {
+        // Disable anchor for the player
+        disableAnchor(player);
+        // Set the ninja enabled status for the player
+        ninjaEnabledMap.put(player.getUniqueId(), true);
+    }
+
+    // Method to disable ninja for a player
+    public static void disableNinja(Player player) {
+        // Set the ninja disabled status for the player
+        ninjaEnabledMap.put(player.getUniqueId(), false);
+    }
+
+    // Method to check if ninja is enabled for a player
+    public static boolean isNinjaEnabled(Player player) {
+        return ninjaEnabledMap.getOrDefault(player.getUniqueId(), false);
+    }
+
+    // Method to check if an item is an anchor for a specific player
+    public static boolean isAnchor(ItemStack item, Player player) {
+        // Implement logic to check if the item is an anchor for the player
         // For example:
-        // return item.getType() == Material.ANCHOR;
+        // return item.getType() == Material.ANVIL && item.hasItemMeta() && item.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Anchor Kit");
+        return false; // Placeholder
+    }
+
+    // Method to check if an item is a ninja item for a specific player
+    public static boolean isNinja(ItemStack item, Player player) {
+        // Implement logic to check if the item is a ninja item for the player
+        // For example:
+        // return item.getType() == Material.LEATHER_BOOTS && item.hasItemMeta() && item.getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE + "Ninja Kit");
         return false; // Placeholder
     }
 }

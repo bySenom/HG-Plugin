@@ -33,8 +33,8 @@ public class Ninja implements Listener {
                 return;
             }
 
-            // Check if the Anchor Kit is enabled
-            if (KitHandler.isNinjaEnabled()) {
+            // Check if the Ninja Kit is enabled for the player
+            if (KitHandler.isNinjaEnabled(player)) {
                 // Find the nearest enemy
                 Entity nearestEnemy = findNearestEnemy(player);
                 if (nearestEnemy != null) {
@@ -110,6 +110,7 @@ public class Ninja implements Listener {
         return 0;
     }
 }
+
 
 
 
