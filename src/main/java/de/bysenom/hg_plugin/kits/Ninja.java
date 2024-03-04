@@ -1,5 +1,6 @@
 package de.bysenom.hg_plugin.kits;
 
+import de.bysenom.hg_plugin.handlers.KitHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -32,14 +33,19 @@ public class Ninja implements Listener {
                 return;
             }
 
-            // Find the nearest enemy
-            Entity nearestEnemy = findNearestEnemy(player);
-            if (nearestEnemy != null) {
-                // Teleport the player behind the nearest enemy
-                teleportBehindEnemy(player, nearestEnemy);
+            // Check if the Anchor Kit is enabled
+            if (KitHandler.isNinjaEnabled()) {
+                // Find the nearest enemy
+                Entity nearestEnemy = findNearestEnemy(player);
+                if (nearestEnemy != null) {
+                    // Teleport the player behind the nearest enemy
+                    teleportBehindEnemy(player, nearestEnemy);
 
-                // Set cooldown for the player
-                setCooldown(player);
+                    // Set cooldown for the player
+                    setCooldown(player);
+                }
+            } else {
+                player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.RED + "Anchor Kit ist nicht aktiviert!");
             }
         }
     }
@@ -79,10 +85,13 @@ public class Ninja implements Listener {
         playerLocation.setDirection(enemyDirection);
         player.teleport(playerLocation);
 
-        // Play teleport sound
-        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+        // Broadcast teleport sound to nearby players
+        for (Player nearbyPlayer : player.getWorld().getPlayers()) {
+            if (nearbyPlayer.getLocation().distance(player.getLocation()) <= 50) { // Adjust the radius as needed
+                nearbyPlayer.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+            }
+        }
     }
-
 
     // Method to set cooldown for the player
     private void setCooldown(Player player) {

@@ -4,6 +4,7 @@ import de.bysenom.hg_plugin.commands.Fly;
 import de.bysenom.hg_plugin.commands.HGJoin;
 import de.bysenom.hg_plugin.commands.HGStart;
 import de.bysenom.hg_plugin.handlers.ItemHandler;
+import de.bysenom.hg_plugin.handlers.KitHandler;
 import de.bysenom.hg_plugin.handlers.LobbyCountdown;
 import de.bysenom.hg_plugin.handlers.BuildHandler;
 import de.bysenom.hg_plugin.kits.Anchor;
@@ -11,7 +12,10 @@ import de.bysenom.hg_plugin.kits.Ninja;
 import de.bysenom.hg_plugin.mechanics.Lobby;
 import de.bysenom.hg_plugin.mechanics.SoupHealing;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin implements CommandExecutor, Listener {
@@ -32,7 +36,7 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         getServer().getPluginManager().registerEvents(new ItemHandler(this), this);
         getServer().getPluginManager().registerEvents(new BuildHandler(), this);
         getServer().getPluginManager().registerEvents(new SoupHealing(), this);
-        //getServer().getPluginManager().registerEvents(new Anchor(this), this);
+        getServer().getPluginManager().registerEvents(new Anchor(this), this);
         getServer().getPluginManager().registerEvents(new Ninja(), this);
 
         getCommand("hgstart").setExecutor(hgStartCommand);
@@ -45,6 +49,31 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
     public void onDisable() {
         getLogger().info("Plugin erfolgreich beendet!");
     }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        // Example usage of KitHandler methods
+        ItemStack item = event.getItem();
+        if (item != null) {
+            if (KitHandler.isAnchor(item)) {
+                // Handle anchor item
+                if (KitHandler.isAnchorEnabled()) {
+                    // Anchor is enabled
+                } else {
+                    // Anchor is not enabled
+                }
+            } else if (KitHandler.isNinja(item)) {
+                // Handle ninja item
+                if (KitHandler.isNinjaEnabled()) {
+                    // Ninja is enabled
+                } else {
+                    // Ninja is not enabled
+                }
+            }
+        }
+    }
+
+
 }
 
 

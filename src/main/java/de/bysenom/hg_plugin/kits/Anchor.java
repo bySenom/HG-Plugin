@@ -1,5 +1,6 @@
 package de.bysenom.hg_plugin.kits;
 
+import de.bysenom.hg_plugin.handlers.KitHandler;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,8 +22,8 @@ public class Anchor implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            // Check if the damage cause is knockback
-            if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            // Check if the damage cause is knockback and if the Anchor Kit is enabled
+            if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && KitHandler.isAnchorEnabled()) {
                 // Play anchor sound
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0f, 1.0f);
 

@@ -14,6 +14,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -55,13 +56,43 @@ public class ItemHandler implements Listener {
             playerInventory.clear(0); // Clear the first slot of the hotbar
             playerInventory.setItem(0, kitsChestItem); // Set the kits chest item in the first slot
         }
+
+        // Check if the player right-clicked with the anchor item
+        if (item.getType() == Material.ANVIL && item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.GRAY + "Anchor Kit")) {
+                // Activate the Anchor Kit
+                KitHandler.enableAnchor();
+
+                // Inform the player that the Anchor Kit is now active
+                player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.GRAY + "Anchor Kit" + ChatColor.RED + " wurde ausgewählt!");
+
+                // Prevent further interaction with the anchor item
+                event.setCancelled(true);
+            }
+        }
+
+
+        if (item.getType() == Material.LEATHER_BOOTS && item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.DARK_PURPLE + "Ninja Kit")) {
+                // Activate the Anchor Kit
+                KitHandler.enableNinja();
+
+                // Inform the player that the Anchor Kit is now active
+                player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.DARK_PURPLE + "Ninja Kit" + ChatColor.RED + " wurde ausgewählt!");
+
+                // Prevent further interaction with the anchor item
+                event.setCancelled(true);
+            }
+        }
     }
 
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         ItemStack droppedItem = event.getItemDrop().getItemStack();
-        if (droppedItem != null && (droppedItem.getType() == Material.PLAYER_HEAD || droppedItem.getType() == Material.CHEST)) {
+        if (droppedItem != null && (droppedItem.getType() == Material.PLAYER_HEAD || droppedItem.getType() == Material.CHEST || droppedItem.getType() == Material.LEATHER_BOOTS || droppedItem.getType() == Material.ANVIL)) {
             event.setCancelled(true);
         }
     }
@@ -69,7 +100,7 @@ public class ItemHandler implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         ItemStack clickedItem = event.getCurrentItem();
-        if (clickedItem != null && (clickedItem.getType() == Material.PLAYER_HEAD || clickedItem.getType() == Material.CHEST)) {
+        if (clickedItem != null && (clickedItem.getType() == Material.PLAYER_HEAD || clickedItem.getType() == Material.CHEST || clickedItem.getType() == Material.LEATHER_BOOTS || clickedItem.getType() == Material.ANVIL)) {
             event.setCancelled(true);
         }
     }
@@ -77,7 +108,7 @@ public class ItemHandler implements Listener {
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
         ItemStack draggedItem = event.getOldCursor();
-        if (draggedItem != null && (draggedItem.getType() == Material.PLAYER_HEAD || draggedItem.getType() == Material.CHEST)) {
+        if (draggedItem != null && (draggedItem.getType() == Material.PLAYER_HEAD || draggedItem.getType() == Material.CHEST || draggedItem.getType() == Material.LEATHER_BOOTS || draggedItem.getType() == Material.ANVIL)) {
             event.setCancelled(true);
         }
     }
@@ -103,13 +134,73 @@ public class ItemHandler implements Listener {
         Inventory gui = Bukkit.createInventory(kitsChestHolder, 9, "Kits Chest GUI");
 
         // Add items to the GUI
-        gui.setItem(4, createKitsChest(player.getUniqueId())); // Pass the player's UUID
+        gui.setItem(4, createKitsChest(player.getUniqueId())); // Add the Kits Chest item
+
+        // Add the Anchor item
+        ItemStack anchorItem = createAnchorItem();
+        gui.setItem(0, anchorItem); // Set the Anchor item in the first slot
+
+        // Add the Ninja Kit item
+        ItemStack ninjaItem = createNinjaItem();
+        gui.setItem(1, ninjaItem); // Set the Ninja Kit item in the second slot
 
         // Play open chest sound
         player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, SoundCategory.MASTER, 1.0f, 1.0f);
 
         // Open the GUI for the player
         player.openInventory(gui);
+    }
+
+    @EventHandler
+    public void onKitsChestClick(InventoryClickEvent event) {
+        Inventory clickedInventory = event.getClickedInventory();
+        if (clickedInventory != null && event.getInventory().getHolder() instanceof KitsChestHolder) {
+            // Check if the clicked inventory is the Kits Chest GUI
+            if (event.getView().getTitle().equals("Kits Chest GUI")) {
+                // Check if the clicked item is the Anchor Kit item
+                ItemStack clickedItem = event.getCurrentItem();
+                if (clickedItem != null && clickedItem.getType() == Material.ANVIL && clickedItem.hasItemMeta()) {
+                    ItemMeta meta = clickedItem.getItemMeta();
+                    if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.GRAY + "Anchor Kit")) {
+                        // Activate the Anchor Kit
+                        KitHandler.enableAnchor();
+
+                        // Inform the player that the Anchor Kit is now active
+                        Player player = (Player) event.getWhoClicked();
+                        player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.GRAY + "Anchor Kit" + ChatColor.RED + " wurde ausgewählt!");
+
+                        // Prevent further interaction with the item
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onNinjaKitClick(InventoryClickEvent event) {
+        Inventory clickedInventory = event.getClickedInventory();
+        if (clickedInventory != null && event.getInventory().getHolder() instanceof KitsChestHolder) {
+            // Check if the clicked inventory is the Kits Chest GUI
+            if (event.getView().getTitle().equals("Kits Chest GUI")) {
+                // Check if the clicked item is the Ninja Kit item
+                ItemStack clickedItem = event.getCurrentItem();
+                if (clickedItem != null && clickedItem.getType() == Material.LEATHER_BOOTS && clickedItem.hasItemMeta()) {
+                    ItemMeta meta = clickedItem.getItemMeta();
+                    if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.DARK_PURPLE + "Ninja Kit")) {
+                        // Activate the Ninja Kit
+                        KitHandler.enableNinja();
+
+                        // Inform the player that the Ninja Kit is now active
+                        Player player = (Player) event.getWhoClicked();
+                        player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.DARK_PURPLE + "Ninja Kit" + ChatColor.RED + " wurde ausgewählt!");
+
+                        // Prevent further interaction with the item
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
     }
 
     // Method to create a player head ItemStack
@@ -205,7 +296,11 @@ public class ItemHandler implements Listener {
         }
     }
 
-    private class KitsChestHolder implements InventoryHolder {
+    public KitsChestHolder createKitsChestHolder(Player player) {
+        return new KitsChestHolder(player);
+    }
+
+    public class KitsChestHolder implements InventoryHolder {
         private final Player player;
 
         public KitsChestHolder(Player player) {
@@ -220,6 +315,35 @@ public class ItemHandler implements Listener {
         public Player getPlayer() {
             return player;
         }
+    }
+
+
+    // Add Items down here
+
+    private ItemStack createAnchorItem() {
+        ItemStack anchorItem = new ItemStack(Material.ANVIL); // Assuming ANCHOR is the material for the Anchor item
+        ItemMeta meta = anchorItem.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Anchor Kit");
+        // You can set other properties of the item, such as lore, enchantments, etc., if needed
+        anchorItem.setItemMeta(meta);
+        return anchorItem;
+    }
+
+    // Method to create the ninja item (anchor item)
+    private ItemStack createNinjaItem() {
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+        LeatherArmorMeta meta = (LeatherArmorMeta) boots.getItemMeta();
+
+        // Set display name
+        meta.setDisplayName(ChatColor.DARK_PURPLE + "Ninja Kit");
+
+        // Set boots color to blue
+        meta.setColor(Color.BLUE);
+
+        // You can set other properties of the item, such as lore, enchantments, etc., if needed
+
+        boots.setItemMeta(meta);
+        return boots;
     }
 
 }
