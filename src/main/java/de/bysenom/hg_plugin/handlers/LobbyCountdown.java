@@ -7,6 +7,7 @@ import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,7 +37,7 @@ public class LobbyCountdown {
             countdownRunning = true;
         } else {
             // Wenn der Countdown läuft, sende eine Nachricht, dass der Countdown bereits aktiv ist
-            Bukkit.broadcastMessage(ChatColor.RED + "Der Countdown läuft bereits!");
+            Bukkit.broadcastMessage(ChatColor.DARK_GREEN + "[BlackLotus] " + ChatColor.RED + "Der Countdown läuft bereits!");
         }
     }
 
@@ -59,7 +60,7 @@ public class LobbyCountdown {
             countdownTime = newTime;
             Bukkit.broadcastMessage(ChatColor.YELLOW + "Countdown-Zeit wurde auf " + newTime + " Sekunden geändert.");
         } else {
-            Bukkit.broadcastMessage(ChatColor.RED + "Der Countdown läuft bereits!");
+            Bukkit.broadcastMessage(ChatColor.DARK_GREEN + "[BlackLotus] " + ChatColor.RED + "Der Countdown läuft bereits!");
         }
     }
 
@@ -72,6 +73,12 @@ public class LobbyCountdown {
         ItemHandler itemHandler = new ItemHandler((JavaPlugin) plugin);  // Assuming 'plugin' is your JavaPlugin instance
         ItemStack playerHeadItem = itemHandler.createPlayerHead(playerUUID);
         player.getInventory().setItem(8, playerHeadItem);  // Place the player head item in the last slot of the hotbar
+
+
+        ItemStack kitsChestItem = itemHandler.createKitsChest(player.getUniqueId());
+        PlayerInventory playerInventory = player.getInventory();
+        playerInventory.clear(0); // Clear the first slot of the hotbar
+        playerInventory.setItem(0, kitsChestItem); // Set the kits chest item in the first slot
 
         countdownTask = new BukkitRunnable() {
             int timeLeft = remainingTime;
@@ -96,6 +103,9 @@ public class LobbyCountdown {
 
                     // Sende einen grünen Titel
                     player.sendTitle(ChatColor.GREEN + message, "", 10, 20, 10);
+
+                    // Send a chat message with the server name in a different color
+                    Bukkit.broadcastMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.GREEN + "Spiel startet in: " + timeLeft);
                 }
 
                 // Überprüfe, ob die Zeit abgelaufen ist

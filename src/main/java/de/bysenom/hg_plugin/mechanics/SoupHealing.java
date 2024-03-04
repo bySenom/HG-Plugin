@@ -15,7 +15,7 @@ public class SoupHealing implements Listener {
         ItemStack item = event.getItem();
 
         // Check if the player right-clicked with mushroom soup
-        if (item != null && item.getType() == Material.MUSHROOM_STEW) {
+        if (item != null && item.getType() == Material.MUSHROOM_STEW && player.getInventory().contains(item)) {
             // Consume the soup
             if (player.getHealth() < player.getMaxHealth()) {
                 // Heal the player by 3.5 hearts
@@ -26,7 +26,7 @@ public class SoupHealing implements Listener {
                 if (item.getAmount() > 1) {
                     item.setAmount(item.getAmount() - 1);
                 } else {
-                    player.getInventory().setItemInMainHand(null);
+                    player.getInventory().setItemInMainHand(new ItemStack(Material.BOWL)); // Replace mushroom soup with an empty bowl
                 }
             }
         }
