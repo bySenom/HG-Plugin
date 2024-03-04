@@ -31,7 +31,7 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         getServer().getPluginManager().registerEvents(new ItemHandler(this), this);
         getServer().getPluginManager().registerEvents(new BuildHandler(), this);
         getServer().getPluginManager().registerEvents(new SoupHealing(), this);
-        getServer().getPluginManager().registerEvents(new Anchor(), this);
+        getServer().getPluginManager().registerEvents(new Anchor(this), this);
 
         getCommand("hgstart").setExecutor(hgStartCommand);
         getCommand("hgjoin").setExecutor(hgJoin);
