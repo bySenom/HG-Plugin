@@ -49,32 +49,24 @@ public class ItemHandler implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
-        Player player = event.getPlayer();
-
-        // Cancel the event to prevent dropping items
-        event.setCancelled(true);
+        ItemStack droppedItem = event.getItemDrop().getItemStack();
+        if (droppedItem != null && droppedItem.getType() == Material.PLAYER_HEAD) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-
-        event.setCancelled(true);
-        // Check if the clicked inventory belongs to the player
-        if (event.getClickedInventory() != null && event.getClickedInventory().getHolder() == player) {
-            // Cancel the event to prevent item moving
+        ItemStack clickedItem = event.getCurrentItem();
+        if (clickedItem != null && clickedItem.getType() == Material.PLAYER_HEAD) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        openCustomGUI(player);
-
-        // Check if the dragged inventory belongs to the player
-        if (event.getView().getTopInventory().getHolder() == player) {
-            // Cancel the event to prevent item moving
+        ItemStack draggedItem = event.getOldCursor();
+        if (draggedItem != null && draggedItem.getType() == Material.PLAYER_HEAD) {
             event.setCancelled(true);
         }
     }
