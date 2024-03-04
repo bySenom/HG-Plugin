@@ -2,6 +2,7 @@ package de.bysenom.hg_plugin.kits;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -77,6 +78,9 @@ public class Ninja implements Listener {
         Location playerLocation = player.getLocation();
         playerLocation.setDirection(enemyDirection);
         player.teleport(playerLocation);
+
+        // Play teleport sound
+        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
     }
 
 
