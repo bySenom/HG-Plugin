@@ -7,6 +7,7 @@ import de.bysenom.hg_plugin.handlers.ItemHandler;
 import de.bysenom.hg_plugin.handlers.LobbyCountdown;
 import de.bysenom.hg_plugin.handlers.BuildHandler;
 import de.bysenom.hg_plugin.kits.Anchor;
+import de.bysenom.hg_plugin.kits.Ninja;
 import de.bysenom.hg_plugin.mechanics.Lobby;
 import de.bysenom.hg_plugin.mechanics.SoupHealing;
 import org.bukkit.command.CommandExecutor;
@@ -31,7 +32,8 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         getServer().getPluginManager().registerEvents(new ItemHandler(this), this);
         getServer().getPluginManager().registerEvents(new BuildHandler(), this);
         getServer().getPluginManager().registerEvents(new SoupHealing(), this);
-        getServer().getPluginManager().registerEvents(new Anchor(this), this);
+        //getServer().getPluginManager().registerEvents(new Anchor(this), this);
+        getServer().getPluginManager().registerEvents(new Ninja(), this);
 
         getCommand("hgstart").setExecutor(hgStartCommand);
         getCommand("hgjoin").setExecutor(hgJoin);
