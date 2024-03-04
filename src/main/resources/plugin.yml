@@ -26,6 +26,6 @@ buildhandler-class: de.bysenom.hg_plugin.handlers.BuildHandler
 teleporthandler-class: de.bysenom.hg_plugin.handlers.TeleportHandler
 itemhandler-class: de.bysenom.hg_plugin.handlers.ItemHandler
 invclearhandler-class: de.bysenom.hg_plugin.handlers.InvClearHandler
-souphealing-class: de.bysenom.hg-plugin.mechanics.SoupHealing
-
+souphealing-class: de.bysenom.hg_plugin.mechanics.SoupHealing
+anchor-class: de.bysenom.hg_plugin.kits.anchor
 
