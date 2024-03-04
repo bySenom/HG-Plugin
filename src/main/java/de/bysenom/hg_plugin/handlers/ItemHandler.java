@@ -67,6 +67,9 @@ public class ItemHandler implements Listener {
                 // Inform the player that the Anchor Kit is now active
                 player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.GRAY + "Anchor Kit" + ChatColor.RED + " wurde ausgewählt!");
 
+                // Close the GUI
+                player.closeInventory();
+
                 // Prevent further interaction with the anchor item
                 event.setCancelled(true);
             }
@@ -78,9 +81,11 @@ public class ItemHandler implements Listener {
             if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.DARK_PURPLE + "Ninja Kit") && KitHandler.isNinjaEnabled(player)) {
                 // Activate the Ninja Kit for the player
                 KitHandler.enableNinja(player);
-
                 // Inform the player that the Ninja Kit is now active
                 player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.DARK_PURPLE + "Ninja Kit" + ChatColor.RED + " wurde ausgewählt!");
+
+                // Close the GUI
+                player.closeInventory();
 
                 // Prevent further interaction with the ninja item
                 event.setCancelled(true);
