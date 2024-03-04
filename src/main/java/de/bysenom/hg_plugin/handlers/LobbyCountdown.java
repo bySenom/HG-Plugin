@@ -102,7 +102,7 @@ public class LobbyCountdown {
                     player.sendTitle(ChatColor.GREEN + message, "", 10, 20, 10);
 
                     // Send a chat message with the server name in a different color
-                    Bukkit.broadcastMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.GREEN + "Spiel startet in: " + timeLeft);
+                    player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.GREEN + "Spiel startet in: " + timeLeft);
                 }
 
                 // Überprüfe, ob die Zeit abgelaufen ist
