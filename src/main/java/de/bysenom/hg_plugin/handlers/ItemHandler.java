@@ -167,9 +167,6 @@ public class ItemHandler implements Listener {
                 Player player = (Player) event.getWhoClicked();
                 KitHandler.enableAnchor(player);
 
-                // Inform the player that the Anchor Kit is now active
-                player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.GRAY + "Anchor Kit" + ChatColor.RED + " wurde ausgewählt!");
-
                 // Prevent further interaction with the item
                 event.setCancelled(true);
             }
@@ -186,9 +183,6 @@ public class ItemHandler implements Listener {
                 // Activate the Ninja Kit for the player who clicked
                 Player player = (Player) event.getWhoClicked();
                 KitHandler.enableNinja(player);
-
-                // Inform the player that the Ninja Kit is now active
-                player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.DARK_PURPLE + "Ninja Kit" + ChatColor.RED + " wurde ausgewählt!");
 
                 // Prevent further interaction with the item
                 event.setCancelled(true);

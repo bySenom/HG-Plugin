@@ -94,8 +94,9 @@ public class LobbyCountdown {
                 // Erzeuge die Nachricht basierend auf der verbleibenden Zeit
                 String message = getMessageForTimeLeft(timeLeft);
 
-                // Spiele Soundeffekte für die letzten 5 Sekunden
-                if (timeLeft <= 5 && timeLeft > 0) {
+                boolean messageSent = false;
+
+                if (timeLeft <= 5 && timeLeft > 0 && !messageSent) {
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.MASTER, 1.0f, 1.0f);
 
                     // Sende einen grünen Titel
@@ -103,6 +104,9 @@ public class LobbyCountdown {
 
                     // Send a chat message with the server name in a different color
                     player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.GREEN + "Spiel startet in: " + timeLeft);
+
+                    // Set the messageSent variable to true to indicate that the message has been sent
+                    messageSent = true;
                 }
 
                 // Überprüfe, ob die Zeit abgelaufen ist
