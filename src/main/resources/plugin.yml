@@ -25,5 +25,6 @@ invincibilityhandler-class: de.bysenom.hg_plugin.handlers.InvincibilityHandler
 buildhandler-class: de.bysenom.hg_plugin.handlers.BuildHandler
 teleporthandler-class: de.bysenom.hg_plugin.handlers.TeleportHandler
 itemhandler-class: de.bysenom.hg_plugin.handlers.ItemHandler
+invclearhandler-class: de.bysenom.hg_plugin.handlers.InvClearHandler
 
 
