@@ -34,7 +34,7 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         HGJoin hgJoin = new HGJoin(this, lobbyCountdown);
         getServer().getPluginManager().registerEvents(new ItemHandler(this), this);
         // Register your event listener
-        getServer().getPluginManager().registerEvents(new ItemHandler(this), this);
+
         getServer().getPluginManager().registerEvents(new BuildHandler(), this);
         getServer().getPluginManager().registerEvents(new SoupHealing(), this);
         getServer().getPluginManager().registerEvents(new Anchor(this), this);
