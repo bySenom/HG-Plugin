@@ -44,8 +44,6 @@ public class Ninja implements Listener {
                     // Set cooldown for the player
                     setCooldown(player);
                 }
-            } else {
-                player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.RED + "Anchor Kit ist nicht aktiviert!");
             }
         }
     }
