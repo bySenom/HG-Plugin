@@ -66,10 +66,9 @@ public class LobbyCountdown {
         TeleportHandler.teleportToLocation(player, "LobbySpawn");
 
         UUID playerUUID = player.getUniqueId();
-        ItemHandler itemHandler = new ItemHandler((JavaPlugin) plugin);
+        ItemHandler itemHandler = new ItemHandler((JavaPlugin) plugin);  // Assuming 'plugin' is your JavaPlugin instance
         ItemStack playerHeadItem = itemHandler.createPlayerHead(playerUUID);
-
-        player.getInventory().addItem(playerHeadItem);
+        player.getInventory().setItem(8, playerHeadItem);  // Place the player head item in the last slot of the hotbar
 
         countdownTask = new BukkitRunnable() {
             int timeLeft = remainingTime;
@@ -77,7 +76,6 @@ public class LobbyCountdown {
 
             @Override
             public void run() {
-
                 BuildHandler.disallowBlockPlacing();
                 BuildHandler.disallowBlockBreaking();
                 HungerHandler.disableHunger(player);

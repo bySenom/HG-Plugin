@@ -4,11 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -36,12 +38,51 @@ public class ItemHandler implements Listener {
         if (item.getType() == Material.PLAYER_HEAD) {
             // Open a custom GUI instead of a chest
             openCustomGUI(player);
+
+            // Set the player head item in the last slot of the hotbar
+            ItemStack playerHeadItem = createPlayerHead(player.getUniqueId());
+            PlayerInventory playerInventory = player.getInventory();
+            playerInventory.clear(8); // Clear the last slot of the hotbar
+            playerInventory.setItem(8, playerHeadItem); // Set the player head item in the last slot
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        Player player = event.getPlayer();
+
+        // Cancel the event to prevent dropping items
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+
+        event.setCancelled(true);
+        // Check if the clicked inventory belongs to the player
+        if (event.getClickedInventory() != null && event.getClickedInventory().getHolder() == player) {
+            // Cancel the event to prevent item moving
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        openCustomGUI(player);
+
+        // Check if the dragged inventory belongs to the player
+        if (event.getView().getTopInventory().getHolder() == player) {
+            // Cancel the event to prevent item moving
+            event.setCancelled(true);
         }
     }
 
     // Method to open a custom GUI
     private void openCustomGUI(Player player) {
-        Inventory gui = Bukkit.createInventory(new CustomHolder(), 9, "Custom GUI");
+        CustomHolder customHolder = new CustomHolder(player);
+        Inventory gui = Bukkit.createInventory(customHolder, 9, "Custom GUI");
 
         // Add items to the GUI
         gui.setItem(4, createPlayerHead(player.getUniqueId())); // Pass the player's UUID
@@ -67,22 +108,50 @@ public class ItemHandler implements Listener {
         }
 
         // Set the display name
-        meta.setDisplayName(ChatColor.RESET + player.getName() + "'s Stats"); // Assuming you're using ChatColor from Bukkit
+        meta.setDisplayName(ChatColor.RESET + player.getName() + "'s Stats");
 
         playerHead.setItemMeta(meta);
 
-        // Put the item in the last slot of the hotbar
+        // Clear the last slot of the hotbar and set the player head item
         PlayerInventory inventory = player.getInventory();
-        inventory.setItem(8, playerHead);
+        inventory.clear(8); // Clear the last slot of the hotbar
+        inventory.setItem(8, playerHead); // Set the player head item in the last slot
 
         return playerHead;
     }
 
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        Inventory inventory = event.getInventory();
+        InventoryHolder holder = inventory.getHolder();
+
+        if (holder instanceof CustomHolder) {
+            CustomHolder customHolder = (CustomHolder) holder;
+            Player player = customHolder.getPlayer();
+
+            // Give the player the player head after closing the custom GUI
+            ItemStack playerHeadItem = createPlayerHead(player.getUniqueId());
+            PlayerInventory playerInventory = player.getInventory();
+            playerInventory.clear(8); // Clear the last slot of the hotbar
+            playerInventory.setItem(8, playerHeadItem); // Set the player head item in the last slot
+        }
+    }
+
     // Custom InventoryHolder for the custom GUI
     private class CustomHolder implements InventoryHolder {
+        private final Player player;
+
+        public CustomHolder(Player player) {
+            this.player = player;
+        }
+
         @Override
         public Inventory getInventory() {
             return null;
+        }
+
+        public Player getPlayer() {
+            return player;
         }
     }
 }
