@@ -8,8 +8,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.plugin.java.JavaPlugin;
+import de.bysenom.hg_plugin.handlers.TeleportHandler;
 
-import static de.bysenom.hg_plugin.handlers.ItemHandler.getPlayerHeadItem;
+import java.util.UUID;
 
 public class LobbyCountdown {
 
@@ -63,14 +65,12 @@ public class LobbyCountdown {
         TeleportHandler.initializeLocations();
         TeleportHandler.teleportToLocation(player, "LobbySpawn");
 
-        ItemStack playerHeadItem = getPlayerHeadItem(plugin);
+        UUID playerUUID = player.getUniqueId();
+        ItemHandler itemHandler = new ItemHandler((JavaPlugin) plugin);
+        ItemStack playerHeadItem = itemHandler.createPlayerHead(playerUUID);
 
-        if (ItemHandler.createWoodenChestItem(plugin)) {
-            player.getInventory().addItem(ItemHandler.getWoodenChestItem());
-        }
-        if (ItemHandler.createPlayerHeadItem(plugin)) {
-            player.getInventory().addItem(getPlayerHeadItem(plugin));
-        }
+        player.getInventory().addItem(playerHeadItem);
+
         countdownTask = new BukkitRunnable() {
             int timeLeft = remainingTime;
 
