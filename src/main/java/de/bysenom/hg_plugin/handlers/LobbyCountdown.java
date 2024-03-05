@@ -14,8 +14,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
-import static org.bukkit.Bukkit.getServer;
-
 public class LobbyCountdown {
 
     private int countdownTime = 60; // Countdown-Zeit in Sekunden
@@ -67,16 +65,18 @@ public class LobbyCountdown {
     }
 
     private void startPlayerCountdown(Player player, int remainingTime, int newTime) {
-
         TeleportHandler.initializeLocations();
         TeleportHandler.teleportToLocation(player, "LobbySpawn");
 
-        ScoreBoardHandler.deleteScoreboard();
-
-        // Create ScoreBoardHandler if not already initialized
+        // Create ScoreBoardHandler before using it
         if (scoreBoardHandler == null) {
             scoreBoardHandler = new ScoreBoardHandler();
         }
+
+        // Delete the existing scoreboard
+        ScoreBoardHandler.deleteScoreboard();
+
+        // Display the scoreboard
         scoreBoardHandler.displayScoreboard();
 
 
