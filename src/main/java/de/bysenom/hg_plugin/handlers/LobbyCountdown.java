@@ -14,12 +14,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
+import static org.bukkit.Bukkit.getServer;
+
 public class LobbyCountdown {
 
     private int countdownTime = 60; // Countdown-Zeit in Sekunden
     private final Plugin plugin;
     private boolean countdownRunning = false;
     private BukkitRunnable countdownTask;
+    private ScoreBoardHandler scoreBoardHandler;
+
+
 
 
     public LobbyCountdown(Plugin plugin) {
@@ -66,6 +71,15 @@ public class LobbyCountdown {
         TeleportHandler.initializeLocations();
         TeleportHandler.teleportToLocation(player, "LobbySpawn");
 
+        ScoreBoardHandler.deleteScoreboard();
+
+        // Create ScoreBoardHandler if not already initialized
+        if (scoreBoardHandler == null) {
+            scoreBoardHandler = new ScoreBoardHandler();
+        }
+        scoreBoardHandler.displayScoreboard();
+
+
         UUID playerUUID = player.getUniqueId();
         ItemHandler itemHandler = new ItemHandler((JavaPlugin) plugin);  // Assuming 'plugin' is your JavaPlugin instance
         ItemStack playerHeadItem = itemHandler.createPlayerHead(playerUUID);
@@ -83,6 +97,8 @@ public class LobbyCountdown {
 
             @Override
             public void run() {
+                ScoreBoardHandler scoreBoardHandler = new ScoreBoardHandler();
+
                 BuildHandler.disallowBlockPlacing();
                 BuildHandler.disallowBlockBreaking();
                 HungerHandler.disableHunger(player);
@@ -116,6 +132,7 @@ public class LobbyCountdown {
                     // Breche die Aufgabe ab
                     cancel();
                     countdownRunning = false; // Setze countdownRunning auf false, um den Countdown neu zu starten
+
                     BuildHandler.allowBlockBreaking();
                     BuildHandler.allowBlockPlacing();
                     HungerHandler.enableHunger(player);
@@ -123,6 +140,7 @@ public class LobbyCountdown {
                     //MovementHandler.enableMovement(player);
                     Inventory playerInventory = player.getInventory();
                     InvClearHandler.clearInventory(playerInventory);
+                    ScoreBoardHandler.deleteScoreboard();
                 }
 
                 // Verringere die verbleibende Zeit

@@ -3,10 +3,7 @@ package de.bysenom.hg_plugin;
 import de.bysenom.hg_plugin.commands.Fly;
 import de.bysenom.hg_plugin.commands.HGJoin;
 import de.bysenom.hg_plugin.commands.HGStart;
-import de.bysenom.hg_plugin.handlers.ItemHandler;
-import de.bysenom.hg_plugin.handlers.KitHandler;
-import de.bysenom.hg_plugin.handlers.LobbyCountdown;
-import de.bysenom.hg_plugin.handlers.BuildHandler;
+import de.bysenom.hg_plugin.handlers.*;
 import de.bysenom.hg_plugin.kits.Anchor;
 import de.bysenom.hg_plugin.kits.Ninja;
 import de.bysenom.hg_plugin.mechanics.Lobby;
@@ -23,10 +20,12 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
     private LobbyCountdown lobbyCountdown;
     private Lobby lobby;
+    private ScoreBoardHandler scoreBoardHandler;
 
 
     public void onEnable() {
         // Initialize LobbyCountdown and Lobby
+        scoreBoardHandler = new ScoreBoardHandler();
         LobbyCountdown lobbyCountdown = new LobbyCountdown(this);
         lobby = new Lobby(lobbyCountdown);
         ItemHandler itemHandler = new ItemHandler(this);
@@ -39,6 +38,9 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         getServer().getPluginManager().registerEvents(new SoupHealing(), this);
         getServer().getPluginManager().registerEvents(new Anchor(this), this);
         getServer().getPluginManager().registerEvents(new Ninja(), this);
+
+        // No need to register ScoreBoardHandler as an event listener
+        // getServer().getPluginManager().registerEvents(new ScoreBoardHandler(), this);
 
         getCommand("hgstart").setExecutor(hgStartCommand);
         getCommand("hgjoin").setExecutor(hgJoin);
