@@ -21,6 +21,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+
 public final class Main extends JavaPlugin implements CommandExecutor, Listener {
 
     private LobbyCountdown lobbyCountdown;
@@ -29,6 +31,14 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
 
 
     public void onEnable() {
+
+        try {
+            StatisticHandler statisticHandler = new StatisticHandler(this); // Replace "your-plugin-name" with your actual plugin name
+            System.out.println("Statistic folder and file created successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to create statistic folder and file!");
+        }
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             /*
@@ -59,6 +69,7 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         getServer().getPluginManager().registerEvents(new SoupHealing(), this);
         getServer().getPluginManager().registerEvents(new Anchor(this), this);
         getServer().getPluginManager().registerEvents(new Ninja(), this);
+
 
         // No need to register ScoreBoardHandler as an event listener
         // getServer().getPluginManager().registerEvents(new ScoreBoardHandler(), this);

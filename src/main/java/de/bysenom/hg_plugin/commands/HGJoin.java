@@ -2,6 +2,7 @@ package de.bysenom.hg_plugin.commands;
 
 import de.bysenom.hg_plugin.handlers.ItemHandler;
 import de.bysenom.hg_plugin.handlers.LobbyCountdown;
+import de.bysenom.hg_plugin.handlers.ScoreBoardHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

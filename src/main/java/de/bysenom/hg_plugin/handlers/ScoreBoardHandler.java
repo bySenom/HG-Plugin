@@ -3,33 +3,21 @@ package de.bysenom.hg_plugin.handlers;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Bukkit;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.ChatColor;
+import org.bukkit.scoreboard.*;
 
 public class ScoreBoardHandler {
     private Scoreboard scoreboard;
-
-    private Objective objective; // Declare the objective variable
+    private static int lastPlayerCount = -1;
 
 
     public void displayScoreboard() {
         // Replace "yourServerName" with your actual server name
         String serverName = "§lBLACKLOTUS.NET"; // Prepend '§l' for bold text
         Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-        // Correct: using the correct variable name "objective" with a space
-        Objective existingObjective = board.registerNewObjective("sb", "dummy", " " + serverName);
 
-        // Either retrieve the existing objective or create a new one
-        objective = board.getObjective("sb");
-        if (objective == null) {
-            // If objective doesn't exist, create a new one
-            objective = board.registerNewObjective("sb", "dummy", " " + serverName);
-            // ... (remaining code to set scoreboard lines)
-        }
-
-        Objective objective = board.getObjective("sb"); // Check if an objective with the name 'sb' already exists
+        // Check if an objective with the name 'sb' already exists
+        Objective objective = board.getObjective("sb");
         if (objective == null) {
             // If it doesn't exist, register a new one
             objective = board.registerNewObjective("sb", "dummy", " " + serverName); // Use the bold server name string directly
@@ -47,30 +35,77 @@ public class ScoreBoardHandler {
             objective.getScore("").setScore(2); // Blank line
             objective.getScore(" ").setScore(1); // Blank line for spacing
             objective.getScore("§7Players:").setScore(0); // Line with text "Players:"
-            objective.getScore("§7Players: " + PlaceholderAPI.setPlaceholders(null, "%online_players%")).setScore(-1);
-            objective.getScore(" ").setScore(-2); // Blank line for spacing
-            objective.getScore("§7Kit:").setScore(-3); // Line with text "Kit:"
-            objective.getScore("§E%kit%").setScore(-4); // Line with placeholder for kit name
+
             // Update player count using the objective
-            updatePlayerCount(objective, Bukkit.getServer().getOnlinePlayers().size());
+            int playerCount = Bukkit.getServer().getOnlinePlayers().size();
+            objective.getScore(String.valueOf(playerCount)).setScore(-1);
+            objective.getScore("                ").setScore(-2); // Line with text "Players:"
+            objective.getScore("§7Kits:").setScore(-3); // Line with text "Players:"
+            objective.getScore("§E%KIT%").setScore(-4); // Line with text "Players:"
+
+            // Additional debugging messages
+            Bukkit.getLogger().info("Objective 'sb' created and populated.");
+        } else {
+            // Debug message when the objective is already existing
+            Bukkit.getLogger().info("Objective 'sb' already exists. Skipping scoreboard creation.");
+            // Update player count using the existing objective
+            int playerCount = Bukkit.getServer().getOnlinePlayers().size();
+            objective.getScore(PlaceholderAPI.setPlaceholders(null, "%online_players")).setScore(playerCount);
         }
     }
+
+    public static void updateScoreboard() {
+        // Get the scoreboard and the 'sb' objective
+        Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+        Objective objective = board.getObjective("sb");
+
+        // Check if the 'sb' objective exists
+        if (objective != null) {
+            // Get the current player count
+            int playerCount = Bukkit.getServer().getOnlinePlayers().size();
+
+            // Only update the scoreboard if the player count has changed
+            if (playerCount != lastPlayerCount) {
+                // Remove the previous score entry for player count
+                removePreviousPlayerCountScore(board, objective);
+
+                // Update player count using the objective
+                objective.getScore(String.valueOf(playerCount)).setScore(-1);
+
+                // Update the last player count
+                lastPlayerCount = playerCount;
+
+                // Additional debugging message
+                Bukkit.getLogger().info("Scoreboard updated with player count: " + playerCount);
+            }
+        } else {
+            // Debug message if the 'sb' objective doesn't exist
+            Bukkit.getLogger().warning("Unable to update scoreboard. Objective 'sb' does not exist.");
+        }
+    }
+
+    private static void removePreviousPlayerCountScore(Scoreboard board, Objective objective) {
+        for (String entry : board.getEntries()) {
+            Score score = objective.getScore(entry);
+            if (score.isScoreSet() && score.getScore() == -1) {
+                // Remove the previous score entry for player count
+                board.resetScores(entry);
+                break;
+            }
+        }
+    }
+
 
     public static void deleteScoreboard() {
         Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         Objective objective = board.getObjective("sb");
         if (objective != null) {
-            objective.unregister();
+            objective.unregister(); // Unregister the objective
         }
     }
 
     public ScoreBoardHandler() {
         ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
         this.scoreboard = scoreboardManager.getMainScoreboard();
-    }
-
-    public void updatePlayerCount(Objective existingObjective, int playerCount) {
-        // Use the passed objective here
-        existingObjective.getScore("§7Players: " + PlaceholderAPI.setPlaceholders(null, "%online_players%")).setScore(playerCount);
     }
 }
