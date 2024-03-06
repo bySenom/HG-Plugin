@@ -72,15 +72,12 @@ public class LobbyCountdown {
         TeleportHandler.initializeLocations();
         TeleportHandler.teleportToLocation(player, "LobbySpawn");
 
-        if (scoreBoardHandler == null) {
-            scoreBoardHandler = new ScoreBoardHandler();
-        }
-
+        ScoreBoardHandler scoreBoardHandler = new ScoreBoardHandler(); // Create an instance of ScoreBoardHandler
         // Delete the existing scoreboard
-        ScoreBoardHandler.deleteScoreboard();
+        scoreBoardHandler.deleteScoreboard(player);
 
         // Display the scoreboard
-        scoreBoardHandler.displayScoreboard();
+        scoreBoardHandler.displayScoreboard(player);
 
         UUID playerUUID = player.getUniqueId();
         ItemHandler itemHandler = new ItemHandler((JavaPlugin) plugin);  // Assuming 'plugin' is your JavaPlugin instance
@@ -99,8 +96,9 @@ public class LobbyCountdown {
 
             @Override
             public void run() {
-                ScoreBoardHandler scoreBoardHandler = new ScoreBoardHandler();
-                scoreBoardHandler.updateScoreboard();
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    ScoreBoardHandler.updateScoreboard(player);
+                }
                 BuildHandler.disallowBlockPlacing();
                 BuildHandler.disallowBlockBreaking();
                 HungerHandler.disableHunger(player);
@@ -142,7 +140,7 @@ public class LobbyCountdown {
                     //MovementHandler.enableMovement(player);
                     Inventory playerInventory = player.getInventory();
                     InvClearHandler.clearInventory(playerInventory);
-                    ScoreBoardHandler.deleteScoreboard();
+                    scoreBoardHandler.deleteScoreboard(player);
                 }
 
                 // Verringere die verbleibende Zeit

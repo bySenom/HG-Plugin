@@ -1,7 +1,6 @@
 package de.bysenom.hg_plugin.handlers;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -13,11 +12,12 @@ public class KitHandler {
     private static final Map<UUID, Boolean> anchorEnabledPlayers = new HashMap<>();
 
     // Method to enable anchor for a specific player
-    public static void enableAnchor(Player player) {
+    public static boolean enableAnchor(Player player) {
         // Disable ninja for the player
         disableNinja(player);
         // Set the anchor enabled status for the player
         anchorEnabledPlayers.put(player.getUniqueId(), true);
+        return false;
     }
 
     // Method to disable anchor for a specific player
@@ -33,11 +33,12 @@ public class KitHandler {
     }
 
     // Method to enable ninja for a player
-    public static void enableNinja(Player player) {
+    public static boolean enableNinja(Player player) {
         // Disable anchor for the player
         disableAnchor(player);
         // Set the ninja enabled status for the player
         ninjaEnabledMap.put(player.getUniqueId(), true);
+        return false;
     }
 
     // Method to disable ninja for a player
