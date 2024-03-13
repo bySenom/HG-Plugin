@@ -4,9 +4,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
@@ -103,10 +101,32 @@ public class ItemHandler implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        ItemStack clickedItem = event.getCurrentItem();
-        if (clickedItem != null && (clickedItem.getType() == Material.PLAYER_HEAD || clickedItem.getType() == Material.CHEST || clickedItem.getType() == Material.LEATHER_BOOTS || clickedItem.getType() == Material.ANVIL)) {
-            event.setCancelled(true);
+        if (event.getClickedInventory() != null && event.getClickedInventory().getType() == InventoryType.PLAYER) {
+            int clickedSlot = event.getRawSlot();
+
+            // Check if the clicked slot is within the player's inventory (including hotbar)
+            if (clickedSlot >= 0 && clickedSlot <= 44) {
+                // Check if the click type is a number key press
+                if (event.getClick() == ClickType.NUMBER_KEY) {
+                    event.setCancelled(true);
+                    return;
+                }
+
+                // Check if the clicked item or cursor item is one of the specified materials
+                if (isCancelledMaterial(event.getCurrentItem()) || isCancelledMaterial(event.getCursor())) {
+                    event.setCancelled(true);
+                }
+            }
         }
+    }
+
+    // Method to check if an item is one of the specified materials
+    private boolean isCancelledMaterial(ItemStack item) {
+        if (item == null) {
+            return false;
+        }
+        Material itemType = item.getType();
+        return itemType == Material.PLAYER_HEAD || itemType == Material.CHEST || itemType == Material.LEATHER_BOOTS || itemType == Material.ANVIL;
     }
 
     @EventHandler
@@ -114,6 +134,17 @@ public class ItemHandler implements Listener {
         ItemStack draggedItem = event.getOldCursor();
         if (draggedItem != null && (draggedItem.getType() == Material.PLAYER_HEAD || draggedItem.getType() == Material.CHEST || draggedItem.getType() == Material.LEATHER_BOOTS || draggedItem.getType() == Material.ANVIL)) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemSwap(InventoryClickEvent event) {
+        ItemStack clickedItem = event.getCurrentItem();
+        if (clickedItem != null && (clickedItem.getType() == Material.PLAYER_HEAD || clickedItem.getType() == Material.CHEST || clickedItem.getType() == Material.LEATHER_BOOTS || clickedItem.getType() == Material.ANVIL)) {
+            //Check for number key press
+            if (event.getSlotType() == InventoryType.SlotType.QUICKBAR) {
+                event.setCancelled(true);
+            }
         }
     }
 
@@ -135,10 +166,7 @@ public class ItemHandler implements Listener {
 
     private void openKitsChestGUI(Player player) {
         KitsChestHolder kitsChestHolder = new KitsChestHolder(player);
-        Inventory gui = Bukkit.createInventory(kitsChestHolder, 9, "Kits Chest GUI");
-
-        // Add items to the GUI
-        gui.setItem(4, createKitsChest(player.getUniqueId())); // Add the Kits Chest item
+        Inventory gui = Bukkit.createInventory(kitsChestHolder, 54, "Kits Chest GUI");
 
         // Add the Anchor item
         ItemStack anchorItem = createAnchorItem();
