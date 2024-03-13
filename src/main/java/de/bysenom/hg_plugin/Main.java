@@ -85,20 +85,6 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         getLogger().info("Plugin erfolgreich beendet!");
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onJoin(PlayerJoinEvent event) {
-        String joinText = "%player_name% &ajoined the server! They are rank &f%vault_rank%";
-
-        /*
-         * We parse the placeholders using "setPlaceholders"
-         * This would turn %vault_rank% into the name of the Group, that the
-         * joining player has.
-         */
-        joinText = PlaceholderAPI.setPlaceholders(event.getPlayer(), joinText);
-
-        event.setJoinMessage(joinText);
-    }
-
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer(); // Get the player involved in the event
