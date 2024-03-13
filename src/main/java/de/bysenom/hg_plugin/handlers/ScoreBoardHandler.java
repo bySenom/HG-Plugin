@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
+import de.bysenom.hg_plugin.handlers.KillHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,13 +41,12 @@ public class ScoreBoardHandler {
             objective.getScore(" ").setScore(8); // Blank line for spacing
             objective.getScore("").setScore(7); // Blank line
             objective.getScore(" ").setScore(6); // Blank line for spacing
-            objective.getScore(ChatColor.BOLD +"Kills§7:").setScore(5); // Line with text "KILLS:"
-            objective.getScore("§E%KILLANZAHL%").setScore(4); // Line with placeholder for kill count
+            objective.getScore(ChatColor.BOLD + "Kills§7:").setScore(5); // Line with text "KILLS:"
             objective.getScore(" ").setScore(3); // Blank line for spacing
             objective.getScore("").setScore(-2); // Blank line
             objective.getScore(" ").setScore(1); // Blank line for spacing
-            objective.getScore(ChatColor.BOLD +"Spieler§7:").setScore(0); // Line with text "Players:"
-            objective.getScore(ChatColor.BOLD +"Kit§7:").setScore(-3); // Line with text "Players:"
+            objective.getScore(ChatColor.BOLD + "Spieler§7:").setScore(0); // Line with text "Players:"
+            objective.getScore(ChatColor.BOLD + "Kit§7:").setScore(-3); // Line with text "Players:"
 
 
         }
@@ -56,6 +56,10 @@ public class ScoreBoardHandler {
         int playerCount = Bukkit.getServer().getOnlinePlayers().size();
         String coloredPlayerCount = ChatColor.AQUA + String.valueOf(playerCount);
         objective.getScore(coloredPlayerCount).setScore(-1);
+        int killCount = 0;
+        String coloredKillCount = ChatColor.RED + String.valueOf(killCount);
+        KillHandler killHandler = new KillHandler();
+        objective.getScore(coloredKillCount).setScore(4);
 
         // Update selected kit entry for the player
         String selectedKit = getSelectedKit(player);
