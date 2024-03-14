@@ -1,5 +1,4 @@
-# HG-Plugin
-HG Plugin
+# HG-Plugin 1.20.1
 
 TODO LIST:
 1. Increase Weapon Attack Speed (Attribute) nerfing Axes then
