@@ -11,6 +11,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import de.bysenom.hg_plugin.mechanics.GameTimer;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -141,6 +142,9 @@ public class LobbyCountdown {
                     Inventory playerInventory = player.getInventory();
                     InvClearHandler.clearInventory(playerInventory);
                     scoreBoardHandler.deleteScoreboard(player);
+                    GameTimer gameTimer = new GameTimer(plugin);
+                    // Call the startCountdown method
+                    GameTimer.gameCountdown(3600, player);
                 }
 
                 // Verringere die verbleibende Zeit
