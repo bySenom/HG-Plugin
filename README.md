@@ -16,3 +16,4 @@ Done:
 4. Scoreboard (PlayerCount, Kills, selected Kit)
 5. WorldManager thanks to @Dunios for the template
 6. Kits/Stats GUI
+7. Protection Timer
