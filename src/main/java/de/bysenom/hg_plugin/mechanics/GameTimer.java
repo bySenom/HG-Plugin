@@ -57,6 +57,12 @@ public class GameTimer {
                     }
                 }
 
+                if (protectionTimeLeft == 3570) {
+
+                    player.sendMessage(ChatColor.AQUA + "[BlackLotus] " + ChatColor.RED + "Schutzzeit endet in " + ChatColor.GREEN + "30 " + ChatColor.RED + "Sekunden!");
+
+                }
+
                 // Schutzzeit Announcer
                 if (protectionTimeLeft == 3550) {
                     for (Player player : Bukkit.getOnlinePlayers()) {

@@ -1,5 +1,6 @@
 package de.bysenom.hg_plugin;
 
+import de.bysenom.hg_plugin.commands.SaveCommand;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 import de.bysenom.hg_plugin.commands.Fly;
@@ -28,9 +29,13 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
     private LobbyCountdown lobbyCountdown;
     private Lobby lobby;
     private ScoreBoardHandler scoreBoardHandler;
+    private WorldManager worldManager;
+    private static Main instance;
 
 
     public void onEnable() {
+        // Assign the current instance to the static variable 'instance'
+        instance = this;
 
         try {
             StatisticHandler statisticHandler = new StatisticHandler(this); // Replace "your-plugin-name" with your actual plugin name
@@ -53,11 +58,15 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
              */
             getLogger().warning("Could not find PlaceholderAPI! This plugin is required.");
             Bukkit.getPluginManager().disablePlugin(this);
+            return; // Ensure the plugin is disabled before proceeding further
         }
 
         // Initialize LobbyCountdown and Lobby
-        scoreBoardHandler = new ScoreBoardHandler();
+        Main mainInstance = Main.getInstance();
         LobbyCountdown lobbyCountdown = new LobbyCountdown(this);
+        worldManager = new WorldManager(this); // Initialize worldManager after LobbyCountdown creation
+        worldManager.load("world", "HG-Plugin/saves"); // Load world after initializing worldManager
+        scoreBoardHandler = new ScoreBoardHandler();
         lobby = new Lobby(lobbyCountdown);
         ItemHandler itemHandler = new ItemHandler(this);
         HGStart hgStartCommand = new HGStart(lobbyCountdown);
@@ -78,11 +87,21 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         getCommand("hgjoin").setExecutor(hgJoin);
         getCommand("fly").setExecutor(new Fly());
         getLogger().info("Plugin erfolgreich geladen!");
+        getCommand("hgsaveworld").setExecutor(new SaveCommand(worldManager));
     }
 
     @Override
     public void onDisable() {
         getLogger().info("Plugin erfolgreich beendet!");
+    }
+
+    // Getter method for WorldManager if needed
+    public WorldManager getWorldManager() {
+        return worldManager;
+    }
+
+    public static Main getInstance() {
+        return instance;
     }
 
     @EventHandler

@@ -15,6 +15,9 @@ commands:
   hgstart:
     description: Force Start the Game
     usage: /hgstart
+  hgsaveworld:
+    description: Saves the World
+    usage: /hgsaveworld
 
 main: de.bysenom.hg_plugin.Main
 fly-class: de.bysenom.hg_plugin.commands.Fly
