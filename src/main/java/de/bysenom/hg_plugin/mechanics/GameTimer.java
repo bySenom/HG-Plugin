@@ -1,5 +1,6 @@
 package de.bysenom.hg_plugin.mechanics;
 
+import de.bysenom.hg_plugin.handlers.AttributeHandler;
 import de.bysenom.hg_plugin.handlers.InvincibilityHandler;
 import de.bysenom.hg_plugin.handlers.ScoreBoardHandler;
 import org.bukkit.Bukkit;
@@ -35,6 +36,7 @@ public class GameTimer {
 
     // Start the countdown with a specific remaining time
     public static void gameCountdown(int remainingTimeTwo, Player player) {
+        AttributeHandler.enableAttackSpeedModifier(100000.0);
         ScoreBoardHandler scoreBoardHandler = new ScoreBoardHandler(); // Create an instance of ScoreBoardHandler
 
         // Delete the existing scoreboard
@@ -98,6 +100,8 @@ public class GameTimer {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
                     }
+                    // Disable attack speed modification for all players
+                    AttributeHandler.disableAttackSpeedModifier();
                     cancel();
                     countdownRunning = false;
                 }

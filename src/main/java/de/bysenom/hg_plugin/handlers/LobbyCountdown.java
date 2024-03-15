@@ -73,6 +73,9 @@ public class LobbyCountdown {
         TeleportHandler.initializeLocations();
         TeleportHandler.teleportToLocation(player, "LobbySpawn");
 
+        // Disable attack speed modification for all players
+        AttributeHandler.disableAttackSpeedModifier();
+
         ScoreBoardHandler scoreBoardHandler = new ScoreBoardHandler(); // Create an instance of ScoreBoardHandler
         // Delete the existing scoreboard
         scoreBoardHandler.deleteScoreboard(player);
@@ -144,6 +147,7 @@ public class LobbyCountdown {
                     scoreBoardHandler.deleteScoreboard(player);
                     GameTimer gameTimer = new GameTimer(plugin);
                     // Call the startCountdown method
+                    TeleportHandler.teleportToLocation(player, "GameWorld1");
                     GameTimer.gameCountdown(3600, player);
                 }
 

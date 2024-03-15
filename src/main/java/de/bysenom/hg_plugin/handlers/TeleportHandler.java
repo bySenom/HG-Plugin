@@ -35,14 +35,15 @@ public class TeleportHandler {
         }
 
         // Get the world reference
-        World world = Bukkit.getWorld("world");
+        World world = Bukkit.getWorld("Test1");
+        World world2 = Bukkit.getWorld("world");
 
         // Add the first location
         Location firstLocation = new Location(world, -209, 69, -228); // Example location coordinates
         addLocation("LobbySpawn", firstLocation);
 
         // Add the second location
-        Location secondLocation = new Location(world, -200, 70, 300); // Example location coordinates
-        addLocation("SecondLocation", secondLocation);
+        Location secondLocation = new Location(world2, -200, 70, 300); // Example location coordinates
+        addLocation("GameWorld1", secondLocation);
     }
 }

@@ -32,6 +32,3 @@ invclearhandler-class: de.bysenom.hg_plugin.handlers.InvClearHandler
 souphealing-class: de.bysenom.hg_plugin.mechanics.SoupHealing
 anchor-class: de.bysenom.hg_plugin.kits.anchor
 
-# This sets PlaceholderAPI as an optional dependency for your plugin.
-depend: [PlaceholderAPI]
-

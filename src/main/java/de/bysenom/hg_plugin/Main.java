@@ -1,7 +1,6 @@
 package de.bysenom.hg_plugin;
 
 import de.bysenom.hg_plugin.commands.SaveCommand;
-import me.clip.placeholderapi.PlaceholderAPI;
 
 import de.bysenom.hg_plugin.commands.Fly;
 import de.bysenom.hg_plugin.commands.HGJoin;
@@ -22,6 +21,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.IOException;
 
 public final class Main extends JavaPlugin implements CommandExecutor, Listener {
@@ -45,27 +45,14 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
             System.out.println("Failed to create statistic folder and file!");
         }
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            /*
-             * We register the EventListener here, when PlaceholderAPI is installed.
-             * Since all events are in the main class (this class), we simply use "this"
-             */
-            Bukkit.getPluginManager().registerEvents(this, this);
-        } else {
-            /*
-             * We inform about the fact that PlaceholderAPI isn't installed and then
-             * disable this plugin to prevent issues.
-             */
-            getLogger().warning("Could not find PlaceholderAPI! This plugin is required.");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return; // Ensure the plugin is disabled before proceeding further
-        }
 
         // Initialize LobbyCountdown and Lobby
         Main mainInstance = Main.getInstance();
         LobbyCountdown lobbyCountdown = new LobbyCountdown(this);
         worldManager = new WorldManager(this); // Initialize worldManager after LobbyCountdown creation
-        worldManager.load("world", "HG-Plugin/saves"); // Load world after initializing worldManager
+
+        // No need to load the world here, defer it to a later point
+
         scoreBoardHandler = new ScoreBoardHandler();
         lobby = new Lobby(lobbyCountdown);
         ItemHandler itemHandler = new ItemHandler(this);
@@ -86,8 +73,8 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
         getCommand("hgstart").setExecutor(hgStartCommand);
         getCommand("hgjoin").setExecutor(hgJoin);
         getCommand("fly").setExecutor(new Fly());
-        getLogger().info("Plugin erfolgreich geladen!");
         getCommand("hgsaveworld").setExecutor(new SaveCommand(worldManager));
+        getLogger().info("Plugin erfolgreich geladen!");
     }
 
     @Override
@@ -126,7 +113,21 @@ public final class Main extends JavaPlugin implements CommandExecutor, Listener 
             }
         }
     }
+
+    // Method to load the world
+    private void loadWorld() {
+        String worldName = "world";
+        String worldFolderPath = "HG-Plugin/saves";
+
+        // Check if the world folder exists
+        File worldFolder = new File(worldFolderPath);
+        if (!worldFolder.exists()) {
+            getLogger().warning("World folder does not exist: " + worldFolderPath);
+            getLogger().warning("Failed to load world: " + worldName);
+            return;
+        }
+
+        worldManager.load(worldName, worldFolderPath); // Load world after initializing worldManager
+    }
+
 }
-
-
-

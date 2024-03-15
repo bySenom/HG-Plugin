@@ -8,6 +8,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.FileUtil;
 
 import java.io.*;
@@ -97,8 +98,10 @@ public class WorldManager {
             if (saveFiles != null) {
                 for (File f : saveFiles) {
                     try {
-                        FileUtils.copyFileToDirectory(f, new File(path + "/region/"));
-                        Bukkit.getConsoleSender().sendMessage("[HG-BlackLotus] Copied §e" + f.getName());
+                        if (f.isFile()) { // Check if it's a file
+                            FileUtils.copyFileToDirectory(f, new File(path + "/region/"));
+                            Bukkit.getConsoleSender().sendMessage("[HG-BlackLotus] Copied §e" + f.getName());
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
