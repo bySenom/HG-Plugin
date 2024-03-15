@@ -22,11 +22,9 @@ public class TeleportHandler {
     public static void teleportToLocation(Player player, String locationName) {
         Location location = locations.get(locationName);
         if (location != null) {
-            if (locationName.equals("LobbySpawn") && !firstLocationTeleport.getOrDefault(player, false)) {
-                player.teleport(location);
+            player.teleport(location);
+            if (locationName.equals("LobbySpawn")) {
                 firstLocationTeleport.put(player, true);
-            } else {
-                player.sendMessage("You are not allowed to teleport to this location.");
             }
         } else {
             player.sendMessage("The specified location doesn't exist.");
