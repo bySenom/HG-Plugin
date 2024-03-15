@@ -11,6 +11,7 @@ import java.util.Map;
 public class TeleportHandler {
 
     private static final Map<String, Location> locations = new HashMap<>();
+    private static final Map<Player, Boolean> firstLocationTeleport = new HashMap<>();
 
     // Method to add a new location
     public static void addLocation(String name, Location location) {
@@ -21,7 +22,12 @@ public class TeleportHandler {
     public static void teleportToLocation(Player player, String locationName) {
         Location location = locations.get(locationName);
         if (location != null) {
-            player.teleport(location);
+            if (locationName.equals("LobbySpawn") && !firstLocationTeleport.getOrDefault(player, false)) {
+                player.teleport(location);
+                firstLocationTeleport.put(player, true);
+            } else {
+                player.sendMessage("You are not allowed to teleport to this location.");
+            }
         } else {
             player.sendMessage("The specified location doesn't exist.");
         }
